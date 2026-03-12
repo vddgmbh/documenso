@@ -60,6 +60,13 @@ export type PDFViewerProps = {
    * for rendering fields.
    */
   customPageRenderer?: React.FunctionComponent<{ pageData: PageRenderData }>;
+
+  /**
+   * Optional zoom multiplier to apply to the base scale.
+   * Default: 1.0 (100%)
+   * Range: 0.5 to 2.5 (50% to 250%)
+   */
+  zoomMultiplier?: number;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export default function PDFViewer({
@@ -68,6 +75,7 @@ export default function PDFViewer({
   scrollParentRef,
   onDocumentLoad,
   customPageRenderer,
+  zoomMultiplier = 1.0,
   ...props
 }: PDFViewerProps) {
   const { t } = useLingui();
@@ -199,7 +207,7 @@ export default function PDFViewer({
   }
 
   return (
-    <div ref={$el} className={cn('h-full w-full', className)} {...props}>
+    <div ref={$el} className={cn('h-full w-full', className)} data-pdf-content="true" {...props}>
       {/* Loading State */}
       {isLoading && <PdfViewerLoadingState />}
 
@@ -215,6 +223,7 @@ export default function PDFViewer({
           pages={pages}
           pdf={pdfRef.current}
           customPageRenderer={customPageRenderer}
+          zoomMultiplier={zoomMultiplier}
         />
       )}
     </div>
@@ -228,6 +237,7 @@ type VirtualizedPageListProps = {
   numPages: number;
   pdf: pdfjsLib.PDFDocumentProxy;
   customPageRenderer?: React.FunctionComponent<{ pageData: PageRenderData }>;
+  zoomMultiplier?: number;
 };
 
 const VirtualizedPageList = ({
@@ -237,6 +247,7 @@ const VirtualizedPageList = ({
   numPages,
   pdf,
   customPageRenderer,
+  zoomMultiplier = 1.0,
 }: VirtualizedPageListProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -248,9 +259,11 @@ const VirtualizedPageList = ({
     itemSize: (index, width) => {
       const pageMeta = pages[index];
 
-      // Calculate height based on aspect ratio and available width
+      // Use base width for consistent scaling
+      const baseWidth = Math.min(width, 800);
       const aspectRatio = pageMeta.height / pageMeta.width;
-      const scaledHeight = width * aspectRatio;
+      const baseScale = baseWidth / pageMeta.width;
+      const scaledHeight = pageMeta.height * baseScale * zoomMultiplier;
 
       // Add 32px for the page number text and margins (my-2 = 8px * 2 + text height ~16px)
       // Add additional 2px for the top and bottom borders.
@@ -261,6 +274,23 @@ const VirtualizedPageList = ({
 
   useScrollToPage(contentRef, scrollToItem);
 
+  // When zoomed, we want to use the full page width as the base, not the constrained width
+  // This allows pages to grow beyond the container width
+  const baseWidth = useMemo(() => {
+    if (pages.length === 0) return constraintWidth;
+    // Use the smaller of constraintWidth or a standard width (800px)
+    // This ensures consistent scaling
+    return Math.min(constraintWidth, 800);
+  }, [pages, constraintWidth]);
+
+  // Calculate the maximum width needed for zoomed pages
+  const maxPageWidth = useMemo(() => {
+    if (pages.length === 0) return baseWidth;
+    const baseScale = baseWidth / pages[0].width;
+    const scale = baseScale * zoomMultiplier;
+    return Math.floor(pages[0].width * scale);
+  }, [pages, baseWidth, zoomMultiplier]);
+
   return (
     <div
       ref={contentRef}
@@ -270,6 +300,7 @@ const VirtualizedPageList = ({
       style={{
         height: `${totalSize}px`,
         width: '100%',
+        minWidth: `${maxPageWidth}px`,
         position: 'relative',
       }}
     >
@@ -278,8 +309,9 @@ const VirtualizedPageList = ({
         const pageMeta = pages[index];
         const pageNumber = index + 1;
 
-        // Calculate scale based on constraint width
-        const scale = constraintWidth / pageMeta.width;
+        // Calculate scale using the base width (not constrained width when zoomed)
+        const baseScale = baseWidth / pageMeta.width;
+        const scale = baseScale * zoomMultiplier;
 
         const scaledWidth = Math.floor(pageMeta.width * scale);
         const scaledHeight = Math.floor(pageMeta.height * scale);
@@ -291,9 +323,12 @@ const VirtualizedPageList = ({
               position: 'absolute',
               top: 0,
               left: 0,
-              width: constraintWidth,
+              width: '100%',
               height: `${virtualItem.size}px`,
               transform: `translateY(${virtualItem.start}px)`,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
             <PdfViewerPage
