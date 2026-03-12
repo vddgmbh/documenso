@@ -54,7 +54,7 @@ export const ZoomProvider = ({ children }: ZoomProviderProps) => {
     const stored = safeSessionStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = parseFloat(stored);
-      if (!isNaN(parsed) && parsed >= 0.5 && parsed <= 2.0) {
+      if (!isNaN(parsed) && parsed >= 0.5 && parsed <= 2.5) {
         setZoomLevelState(parsed);
       }
     }
@@ -67,8 +67,8 @@ export const ZoomProvider = ({ children }: ZoomProviderProps) => {
       return;
     }
 
-    // Clamp to valid range [0.5, 2.0]
-    const clamped = Math.max(0.5, Math.min(2.0, level));
+    // Clamp to valid range [0.5, 2.5]
+    const clamped = Math.max(0.5, Math.min(2.5, level));
 
     if (clamped !== level) {
       console.warn(`Zoom level ${level} clamped to ${clamped}`);
@@ -96,7 +96,7 @@ export const ZoomProvider = ({ children }: ZoomProviderProps) => {
     setZoomLevel(1.0);
   }, [setZoomLevel]);
 
-  const canZoomIn = zoomLevel < 2.0;
+  const canZoomIn = zoomLevel < 2.5;
   const canZoomOut = zoomLevel > 0.5;
 
   return (

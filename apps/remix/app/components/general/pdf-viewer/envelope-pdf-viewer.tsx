@@ -19,7 +19,7 @@ export type EnvelopePdfViewerProps = {
   /**
    * Optional zoom multiplier to apply to the base scale.
    * Default: 1.0 (100%)
-   * Range: 0.5 to 2.0 (50% to 200%)
+   * Range: 0.5 to 2.5 (50% to 250%)
    */
   zoomMultiplier?: number;
 } & Omit<PDFViewerProps, 'data' | 'zoomMultiplier'>;
@@ -27,7 +27,7 @@ export type EnvelopePdfViewerProps = {
 export const EnvelopePdfViewer = ({
   errorMessage,
   className,
-  zoomMultiplier,
+  zoomMultiplier = 1.0,
   ...props
 }: EnvelopePdfViewerProps) => {
   const { t } = useLingui();
@@ -36,11 +36,20 @@ export const EnvelopePdfViewer = ({
 
   const { currentEnvelopeItem, renderError } = useCurrentEnvelopeRender();
 
+  // Calculate dynamic max-width based on zoom level
+  // Base max-width is 800px, scale it with zoom
+  const maxWidth = Math.ceil(800 * zoomMultiplier);
+
   if (renderError || !currentEnvelopeItem) {
     return (
-      <div ref={$el} className={cn('h-full w-full max-w-[800px]', className)} {...props}>
+      <div
+        ref={$el}
+        className={cn('h-full w-full', className)}
+        style={{ maxWidth: `${maxWidth}px` }}
+        {...props}
+      >
         {renderError ? (
-          <Alert variant="destructive" className="mb-4 max-w-[800px]">
+          <Alert variant="destructive" className="mb-4" style={{ maxWidth: `${maxWidth}px` }}>
             <AlertTitle>
               {t(errorMessage?.title || PDF_VIEWER_ERROR_MESSAGES.default.title)}
             </AlertTitle>
@@ -63,7 +72,8 @@ export const EnvelopePdfViewer = ({
     <PDFViewerLazy
       key={`${currentEnvelopeItem.envelopeId}-${currentEnvelopeItem.id}`}
       {...props}
-      className={cn('h-full w-full max-w-[800px]', className)}
+      className={cn('h-full w-full', className)}
+      style={{ maxWidth: `${maxWidth}px` }}
       data={currentEnvelopeItem.data}
       zoomMultiplier={zoomMultiplier}
     />

@@ -2,7 +2,7 @@
  * Type definitions for document signing zoom functionality
  */
 
-export const ZOOM_LEVELS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0] as const;
+export const ZOOM_LEVELS = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 2.5] as const;
 
 export type ZoomLevel = (typeof ZOOM_LEVELS)[number];
 
@@ -18,7 +18,7 @@ export type ZoomContextValue = {
 
 export type ZoomControlProps = {
   className?: string;
-  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
+  variant?: 'desktop' | 'mobile';
 };
 
 export type UseZoomKeyboardProps = {

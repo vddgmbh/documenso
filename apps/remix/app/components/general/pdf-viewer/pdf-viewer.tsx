@@ -64,7 +64,7 @@ export type PDFViewerProps = {
   /**
    * Optional zoom multiplier to apply to the base scale.
    * Default: 1.0 (100%)
-   * Range: 0.5 to 2.0 (50% to 200%)
+   * Range: 0.5 to 2.5 (50% to 250%)
    */
   zoomMultiplier?: number;
 } & React.HTMLAttributes<HTMLDivElement>;
@@ -259,9 +259,11 @@ const VirtualizedPageList = ({
     itemSize: (index, width) => {
       const pageMeta = pages[index];
 
-      // Calculate height based on aspect ratio and available width
+      // Use base width for consistent scaling
+      const baseWidth = Math.min(width, 800);
       const aspectRatio = pageMeta.height / pageMeta.width;
-      const scaledHeight = width * aspectRatio * zoomMultiplier;
+      const baseScale = baseWidth / pageMeta.width;
+      const scaledHeight = pageMeta.height * baseScale * zoomMultiplier;
 
       // Add 32px for the page number text and margins (my-2 = 8px * 2 + text height ~16px)
       // Add additional 2px for the top and bottom borders.
@@ -272,13 +274,22 @@ const VirtualizedPageList = ({
 
   useScrollToPage(contentRef, scrollToItem);
 
+  // When zoomed, we want to use the full page width as the base, not the constrained width
+  // This allows pages to grow beyond the container width
+  const baseWidth = useMemo(() => {
+    if (pages.length === 0) return constraintWidth;
+    // Use the smaller of constraintWidth or a standard width (800px)
+    // This ensures consistent scaling
+    return Math.min(constraintWidth, 800);
+  }, [pages, constraintWidth]);
+
   // Calculate the maximum width needed for zoomed pages
   const maxPageWidth = useMemo(() => {
-    if (pages.length === 0) return constraintWidth;
-    const baseScale = constraintWidth / pages[0].width;
+    if (pages.length === 0) return baseWidth;
+    const baseScale = baseWidth / pages[0].width;
     const scale = baseScale * zoomMultiplier;
     return Math.floor(pages[0].width * scale);
-  }, [pages, constraintWidth, zoomMultiplier]);
+  }, [pages, baseWidth, zoomMultiplier]);
 
   return (
     <div
@@ -298,15 +309,12 @@ const VirtualizedPageList = ({
         const pageMeta = pages[index];
         const pageNumber = index + 1;
 
-        // Calculate scale based on constraint width and apply zoom multiplier
-        const baseScale = constraintWidth / pageMeta.width;
+        // Calculate scale using the base width (not constrained width when zoomed)
+        const baseScale = baseWidth / pageMeta.width;
         const scale = baseScale * zoomMultiplier;
 
         const scaledWidth = Math.floor(pageMeta.width * scale);
         const scaledHeight = Math.floor(pageMeta.height * scale);
-
-        // Center the page horizontally when zoomed
-        const leftOffset = Math.max(0, (constraintWidth - scaledWidth) / 2);
 
         return (
           <div

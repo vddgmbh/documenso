@@ -262,6 +262,9 @@ const DocumentSigningPageContent = () => {
           ref={scrollableContainerRef}
         >
           <div className="flex flex-col">
+            {/* Mobile Zoom Control - Sticky below header */}
+            <ZoomControl variant="mobile" />
+
             {/* Horizontal envelope item selector */}
             {envelopeItems.length > 1 && (
               <div className="flex h-fit space-x-2 overflow-x-auto p-2 pt-4 sm:p-4">
@@ -287,7 +290,7 @@ const DocumentSigningPageContent = () => {
             )}
 
             {/* Document View */}
-            <div className="embed--DocumentViewer flex flex-col items-center justify-center p-2 sm:mt-4 sm:p-4">
+            <div className="embed--DocumentViewer relative flex flex-col items-center justify-center p-2 sm:mt-4 sm:p-4">
               {currentEnvelopeItem ? (
                 <EnvelopePdfViewer
                   key={currentEnvelopeItem.id}
@@ -325,8 +328,8 @@ const DocumentSigningPageContent = () => {
           </div>
         </div>
 
-        {/* Zoom Control */}
-        <ZoomControl />
+        {/* Desktop Zoom Control - Fixed bottom-right */}
+        <ZoomControl variant="desktop" />
       </div>
     </div>
   );
