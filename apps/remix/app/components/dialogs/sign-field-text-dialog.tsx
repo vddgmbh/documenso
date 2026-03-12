@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { msg } from '@lingui/core/macro';
 import { Plural, useLingui } from '@lingui/react/macro';
@@ -12,7 +14,6 @@ import { Button } from '@documenso/ui/primitives/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -24,7 +25,7 @@ import {
   FormItem,
   FormMessage,
 } from '@documenso/ui/primitives/form/form';
-import { Textarea } from '@documenso/ui/primitives/textarea';
+import { Input } from '@documenso/ui/primitives/input';
 
 const ZSignFieldTextFormSchema = z.object({
   text: z.string().min(1, { message: msg`Text is required`.id }),
@@ -34,28 +35,48 @@ type TSignFieldTextFormSchema = z.infer<typeof ZSignFieldTextFormSchema>;
 
 export type SignFieldTextDialogProps = {
   fieldMeta?: TTextFieldMeta;
+  currentValue?: string;
 };
 
 export const SignFieldTextDialog = createCallable<SignFieldTextDialogProps, string | null>(
-  ({ call, fieldMeta }) => {
+  ({ call, fieldMeta, currentValue }) => {
     const { t } = useLingui();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const form = useForm<TSignFieldTextFormSchema>({
       resolver: zodResolver(ZSignFieldTextFormSchema),
       defaultValues: {
-        text: '',
+        text: currentValue || '',
       },
     });
 
+    useEffect(() => {
+      // Focus the input when dialog opens
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }, []);
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        void form.handleSubmit((data) => call.end(data.text))();
+      }
+    };
+
     return (
       <Dialog open={true} onOpenChange={(value) => (!value ? call.end(null) : null)}>
-        <DialogContent>
+        <DialogContent
+          onOpenAutoFocus={(e) => {
+            e.preventDefault();
+            requestAnimationFrame(() => {
+              inputRef.current?.focus();
+            });
+          }}
+        >
           <DialogHeader>
             <DialogTitle>{fieldMeta?.label || <Trans>Enter Text</Trans>}</DialogTitle>
-
-            <DialogDescription className="mt-4">
-              <Trans>Please enter a value</Trans>
-            </DialogDescription>
           </DialogHeader>
 
           <Form {...form}>
@@ -70,14 +91,19 @@ export const SignFieldTextDialog = createCallable<SignFieldTextDialogProps, stri
                   render={({ field, fieldState }) => (
                     <FormItem>
                       <FormControl>
-                        <Textarea
+                        <Input
                           id="custom-text"
                           placeholder={fieldMeta?.placeholder ?? t`Enter your text here`}
                           className={cn('w-full rounded-md', {
                             'border-2 border-red-300 text-left ring-2 ring-red-200 ring-offset-2 ring-offset-red-200 focus-visible:border-red-400 focus-visible:ring-4 focus-visible:ring-red-200 focus-visible:ring-offset-2 focus-visible:ring-offset-red-200':
                               fieldState.error,
                           })}
+                          onKeyDown={handleKeyDown}
                           {...field}
+                          ref={(e) => {
+                            field.ref(e);
+                            inputRef.current = e;
+                          }}
                         />
                       </FormControl>
                       <FormMessage />

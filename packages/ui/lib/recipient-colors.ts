@@ -17,7 +17,7 @@ export type RecipientColorStyles = {
   comboxBoxItem: string;
 };
 
-export const DEFAULT_RECT_BACKGROUND = 'rgba(255, 255, 255, 0.95)';
+export const DEFAULT_RECT_BACKGROUND = 'transparent';
 
 // !: values of the declared variable to do all the background, border and shadow styles.
 export const RECIPIENT_COLOR_STYLES = {

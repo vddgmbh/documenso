@@ -15,8 +15,9 @@ import { calculateFieldPosition, calculateMultiItemPosition } from './field-rend
 import type { FieldToRender, RenderFieldElementOptions } from './field-renderer';
 
 // Do not change any of these values without consulting with the team.
-const checkboxFieldPadding = 8;
+const checkboxFieldPadding = 0;
 const spacingBetweenCheckboxAndText = 8;
+const checkboxFieldOffset = 5; // Offset to move the entire field right and down
 
 const calculateCheckboxSize = (fontSize: number) => {
   return fontSize;
@@ -30,13 +31,19 @@ export const renderCheckboxFieldElement = (
 
   const { fieldWidth, fieldHeight } = calculateFieldPosition(field, pageWidth, pageHeight);
 
-  const checkboxMeta: TCheckboxFieldMeta | null = (field.fieldMeta as TCheckboxFieldMeta) || null;
+  const checkboxMeta: TCheckboxFieldMeta | null =
+    (field.fieldMeta as TCheckboxFieldMeta | undefined) || null;
   const checkboxValues = checkboxMeta?.values || [];
 
   const isFirstRender = !pageLayer.findOne(`#${field.renderId}`);
 
   // Clear previous children and listeners to re-render fresh.
   const fieldGroup = upsertFieldGroup(field, options);
+
+  // Apply offset to move the bounding box
+  fieldGroup.x(fieldGroup.x() + checkboxFieldOffset);
+  fieldGroup.y(fieldGroup.y() + checkboxFieldOffset);
+
   fieldGroup.removeChildren();
   fieldGroup.off('transform');
 
@@ -169,10 +176,10 @@ export const renderCheckboxFieldElement = (
       y: itemInputY,
       width: itemSize,
       height: itemSize,
-      stroke: '#374151',
-      strokeWidth: 1.5,
-      cornerRadius: 2,
-      fill: 'white',
+      stroke: 'transparent',
+      strokeWidth: 0,
+      cornerRadius: 0,
+      fill: 'transparent',
     });
 
     const checkboxScale = itemSize / 16;
