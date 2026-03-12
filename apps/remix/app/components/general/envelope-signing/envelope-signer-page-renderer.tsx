@@ -170,7 +170,7 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
       const currentTarget = e.currentTarget as Konva.Group;
       const target = e.target as Konva.Shape;
 
-      const { width: fieldWidth, height: fieldHeight } = fieldGroup.getClientRect();
+      const { width: _fieldWidth, height: fieldHeight } = fieldGroup.getClientRect();
 
       const foundField = localPageFields.find((f) => f.id === unparsedField.id);
       const foundLoadingGroup = currentTarget.findOne('.loading-spinner-group');
@@ -198,7 +198,7 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
       }
 
       const loadingSpinnerGroup = createSpinner({
-        fieldWidth: fieldWidth / scale,
+        fieldWidth: _fieldWidth / scale,
         fieldHeight: fieldHeight / scale,
       });
 
@@ -269,7 +269,8 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
          * TEXT FIELD.
          */
         .with({ type: FieldType.TEXT }, (field) => {
-          handleTextFieldClick({ field, text: null })
+          const currentText = field.customText || null;
+          handleTextFieldClick({ field, text: currentText })
             .then(async (payload) => {
               if (payload) {
                 fieldGroup.add(loadingSpinnerGroup);

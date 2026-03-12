@@ -18,12 +18,12 @@ import {
 import type { FieldToRender, RenderFieldElementOptions } from './field-renderer';
 import { calculateFieldPosition } from './field-renderer';
 
-const DEFAULT_TEXT_X_PADDING = 6;
+const DEFAULT_TEXT_X_PADDING = 2;
 
 const upsertFieldText = (field: FieldToRender, options: RenderFieldElementOptions): Konva.Text => {
   const { pageWidth, pageHeight, mode = 'edit', pageLayer, translations } = options;
 
-  const { fieldWidth, fieldHeight } = calculateFieldPosition(field, pageWidth, pageHeight);
+  const { fieldHeight } = calculateFieldPosition(field, pageWidth, pageHeight);
 
   const fieldMeta = field.fieldMeta as GenericTextFieldTypeMetas | undefined;
 
@@ -101,7 +101,8 @@ const upsertFieldText = (field: FieldToRender, options: RenderFieldElementOption
     x: textX + DEFAULT_TEXT_X_PADDING,
     y: textY,
     verticalAlign: textVerticalAlign,
-    wrap: 'word',
+    wrap: 'none',
+    ellipsis: false,
     text: textToRender,
     fontSize: textFontSize,
     align: textAlign,
@@ -109,7 +110,7 @@ const upsertFieldText = (field: FieldToRender, options: RenderFieldElementOption
     letterSpacing: textLetterSpacing,
     fontFamily: konvaTextFontFamily,
     fill: konvaTextFill,
-    width: fieldWidth - DEFAULT_TEXT_X_PADDING * 2,
+    width: undefined,
     height: fieldHeight,
   } satisfies Partial<Konva.TextConfig>);
 
@@ -151,11 +152,9 @@ export const renderGenericTextFieldElement = (
     fieldText.scaleX(1 / groupScaleX);
     fieldText.scaleY(1 / groupScaleY);
 
-    const rectWidth = fieldRect.width() * groupScaleX;
     const rectHeight = fieldRect.height() * groupScaleY;
 
-    // Update text dimensions
-    fieldText.width(rectWidth - DEFAULT_TEXT_X_PADDING * 2);
+    // Update text height only (width is auto for overflow)
     fieldText.height(rectHeight);
 
     // Force Konva to recalculate text layout
@@ -169,11 +168,9 @@ export const renderGenericTextFieldElement = (
     fieldText.scaleX(1);
     fieldText.scaleY(1);
 
-    const rectWidth = fieldRect.width();
     const rectHeight = fieldRect.height();
 
-    // Update text dimensions
-    fieldText.width(rectWidth - DEFAULT_TEXT_X_PADDING * 2);
+    // Update text height only (width is auto for overflow)
     fieldText.height(rectHeight);
 
     // Force Konva to recalculate text layout

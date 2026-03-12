@@ -22,22 +22,19 @@ export const handleTextFieldClick = async (
     });
   }
 
-  if (field.inserted) {
-    return {
-      type: FieldType.TEXT,
-      value: null,
-    };
-  }
+  // If field is already inserted, allow editing by opening the dialog with current value
+  const currentValue = field.inserted && field.customText ? field.customText : text;
 
-  let textToInsert = text;
-
-  if (!textToInsert) {
-    textToInsert = await SignFieldTextDialog.call({
-      fieldMeta: field.fieldMeta,
-    });
-  }
+  const textToInsert = await SignFieldTextDialog.call({
+    fieldMeta: field.fieldMeta,
+    currentValue: currentValue || undefined,
+  });
 
   if (!textToInsert) {
+    // If user cancels and field was already inserted, return null to keep current value
+    if (field.inserted) {
+      return null;
+    }
     return null;
   }
 
