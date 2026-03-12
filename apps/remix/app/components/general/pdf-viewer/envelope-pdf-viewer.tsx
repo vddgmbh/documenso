@@ -16,11 +16,18 @@ export type EnvelopePdfViewerProps = {
    * The error message to render when there is an error.
    */
   errorMessage: { title: MessageDescriptor; description: MessageDescriptor } | null;
-} & Omit<PDFViewerProps, 'data'>;
+  /**
+   * Optional zoom multiplier to apply to the base scale.
+   * Default: 1.0 (100%)
+   * Range: 0.5 to 2.0 (50% to 200%)
+   */
+  zoomMultiplier?: number;
+} & Omit<PDFViewerProps, 'data' | 'zoomMultiplier'>;
 
 export const EnvelopePdfViewer = ({
   errorMessage,
   className,
+  zoomMultiplier,
   ...props
 }: EnvelopePdfViewerProps) => {
   const { t } = useLingui();
@@ -58,6 +65,7 @@ export const EnvelopePdfViewer = ({
       {...props}
       className={cn('h-full w-full max-w-[800px]', className)}
       data={currentEnvelopeItem.data}
+      zoomMultiplier={zoomMultiplier}
     />
   );
 };
