@@ -261,7 +261,6 @@ const VirtualizedPageList = ({
 
       // Use base width for consistent scaling
       const baseWidth = Math.min(width, 800);
-      const aspectRatio = pageMeta.height / pageMeta.width;
       const baseScale = baseWidth / pageMeta.width;
       const scaledHeight = pageMeta.height * baseScale * zoomMultiplier;
 
@@ -271,6 +270,14 @@ const VirtualizedPageList = ({
     },
     overscan: 5,
   });
+
+  // Expose scrollToItem globally for direct access
+  useEffect(() => {
+    if (contentRef.current) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (contentRef.current as any).__scrollToItem = scrollToItem;
+    }
+  }, [scrollToItem]);
 
   useScrollToPage(contentRef, scrollToItem);
 

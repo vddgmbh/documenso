@@ -1,4 +1,4 @@
-import { type RefObject, useEffect } from 'react';
+import { type RefObject, useCallback, useLayoutEffect, useRef } from 'react';
 
 /**
  * Watch for `data-scroll-to-page` attribute changes on a container element.
@@ -11,12 +11,19 @@ import { type RefObject, useEffect } from 'react';
  */
 export const useScrollToPage = (
   contentRef: RefObject<HTMLElement | null>,
-  scrollToItem: (index: number) => void,
+  scrollToItem: (index: number, behavior?: ScrollBehavior) => void,
 ) => {
-  useEffect(() => {
+  const scrollToItemRef = useRef(scrollToItem);
+  const observerRef = useRef<MutationObserver | null>(null);
+
+  useLayoutEffect(() => {
+    scrollToItemRef.current = scrollToItem;
+  }, [scrollToItem]);
+
+  const setupObserver = useCallback(() => {
     const el = contentRef.current;
 
-    if (!el) {
+    if (!el || observerRef.current) {
       return;
     }
 
@@ -29,8 +36,7 @@ export const useScrollToPage = (
             const pageNumber = parseInt(raw, 10);
 
             if (!isNaN(pageNumber) && pageNumber >= 1) {
-              // Pages are 1-indexed, virtual list items are 0-indexed.
-              scrollToItem(pageNumber - 1);
+              scrollToItemRef.current(pageNumber - 1, 'auto');
             }
 
             el.removeAttribute('data-scroll-to-page');
@@ -40,7 +46,17 @@ export const useScrollToPage = (
     });
 
     observer.observe(el, { attributes: true, attributeFilter: ['data-scroll-to-page'] });
+    observerRef.current = observer;
+  }, [contentRef]);
 
-    return () => observer.disconnect();
-  }, [contentRef, scrollToItem]);
+  useLayoutEffect(() => {
+    setupObserver();
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+    };
+  }, [setupObserver]);
 };
