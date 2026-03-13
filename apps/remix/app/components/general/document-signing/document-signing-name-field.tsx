@@ -69,7 +69,16 @@ export const DocumentSigningNameField = ({
   const [showFullNameModal, setShowFullNameModal] = useState(false);
   const [localFullName, setLocalFullName] = useState('');
 
+  // If field has a default value (customText), treat it as read-only
+  const hasDefaultValue = Boolean(field.customText && field.customText.trim() !== '');
+  const isFieldReadOnly = parsedFieldMeta?.readOnly || hasDefaultValue;
+
   const onPreSign = () => {
+    // If field is read-only due to default value, auto-sign with that value
+    if (hasDefaultValue && !field.inserted) {
+      return true;
+    }
+
     if (!providedFullName && !isAssistantMode) {
       setShowFullNameModal(true);
       return false;
@@ -93,7 +102,8 @@ export const DocumentSigningNameField = ({
 
   const onSign = async (authOptions?: TRecipientActionAuth, name?: string) => {
     try {
-      const value = name || providedFullName || '';
+      // Use default value if available, otherwise use provided name
+      const value = hasDefaultValue ? field.customText : name || providedFullName || '';
 
       if (!value && !isAssistantMode) {
         setShowFullNameModal(true);
@@ -163,7 +173,13 @@ export const DocumentSigningNameField = ({
 
   return (
     <DocumentSigningFieldContainer
-      field={field}
+      field={{
+        ...field,
+        fieldMeta: {
+          ...parsedFieldMeta,
+          readOnly: isFieldReadOnly,
+        },
+      }}
       onPreSign={onPreSign}
       onSign={onSign}
       onRemove={onRemove}
@@ -171,10 +187,16 @@ export const DocumentSigningNameField = ({
     >
       {isLoading && <DocumentSigningFieldsLoader />}
 
-      {!field.inserted && (
+      {!field.inserted && !hasDefaultValue && (
         <DocumentSigningFieldsUninserted>
           <Trans>Name</Trans>
         </DocumentSigningFieldsUninserted>
+      )}
+
+      {!field.inserted && hasDefaultValue && (
+        <DocumentSigningFieldsInserted textAlign={parsedFieldMeta?.textAlign}>
+          {field.customText}
+        </DocumentSigningFieldsInserted>
       )}
 
       {field.inserted && (

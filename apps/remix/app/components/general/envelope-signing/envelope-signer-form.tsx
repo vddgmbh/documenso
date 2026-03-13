@@ -26,9 +26,13 @@ export default function EnvelopeSignerForm() {
     assistantRecipients,
     selectedAssistantRecipient,
     setSelectedAssistantRecipientId,
+    isNameLocked: contextIsNameLocked,
   } = useRequiredEnvelopeSigningContext();
 
-  const { isNameLocked, isEmailLocked } = useEmbedSigningContext() || {};
+  const { isNameLocked: embedIsNameLocked, isEmailLocked } = useEmbedSigningContext() || {};
+
+  // Use embed lock if available, otherwise use context lock
+  const isNameLocked = embedIsNameLocked ?? contextIsNameLocked;
 
   const hasSignatureField = useMemo(() => {
     return recipientFields.some((field) => isSignatureFieldType(field.type));

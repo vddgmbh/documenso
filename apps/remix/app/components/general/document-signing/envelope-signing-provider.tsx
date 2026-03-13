@@ -31,6 +31,7 @@ export type EnvelopeSigningContextValue = {
   setEmail: (_value: string) => void;
   signature: string | null;
   setSignature: (_value: string | null) => void;
+  isNameLocked: boolean;
 
   showPendingFieldTooltip: boolean;
   setShowPendingFieldTooltip: (_value: boolean) => void;
@@ -94,7 +95,9 @@ export const EnvelopeSigningProvider = ({
 
   const { envelope, recipient } = envelopeData;
 
-  const [fullName, setFullName] = useState(initialFullName || '');
+  // Lock name if recipient already has a name set
+  const shouldLockName = Boolean(recipient.name && recipient.name.trim() !== '');
+  const [fullName, setFullName] = useState(initialFullName || recipient.name || '');
   const [email, setEmail] = useState(initialEmail || '');
 
   const [showPendingFieldTooltip, setShowPendingFieldTooltip] = useState(false);
@@ -380,6 +383,7 @@ export const EnvelopeSigningProvider = ({
         setEmail,
         signature,
         setSignature,
+        isNameLocked: shouldLockName,
         envelopeData,
         envelope,
 
