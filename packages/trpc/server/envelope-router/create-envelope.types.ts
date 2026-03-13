@@ -95,6 +95,7 @@ export const ZCreateEnvelopePayloadSchema = z.object({
 export const ZCreateEnvelopeRequestSchema = zodFormData({
   payload: zfd.json(ZCreateEnvelopePayloadSchema),
   files: zfd.repeatableOfType(zfd.file()),
+  attachmentFiles: zfd.repeatableOfType(zfd.file()).optional(),
 });
 
 export const ZCreateEnvelopeResponseSchema = z.object({

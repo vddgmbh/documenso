@@ -28,6 +28,7 @@ import { DocumentPageViewDropdown } from '~/components/general/document/document
 import { DocumentPageViewInformation } from '~/components/general/document/document-page-view-information';
 import { DocumentPageViewRecentActivity } from '~/components/general/document/document-page-view-recent-activity';
 import { DocumentPageViewRecipients } from '~/components/general/document/document-page-view-recipients';
+import { DocumentPageViewAttachments } from '~/components/general/document/document-page-view-attachments';
 import { DocumentRecipientLinkCopyDialog } from '~/components/general/document/document-recipient-link-copy-dialog';
 import {
   DocumentStatus as DocumentStatusComponent,
@@ -265,6 +266,9 @@ export default function DocumentPage({ params }: Route.ComponentProps) {
 
             {/* Recipients section. */}
             <DocumentPageViewRecipients envelope={envelope} documentRootPath={documentRootPath} />
+
+            {/* Attachments section. */}
+            <DocumentPageViewAttachments envelopeId={envelope.id} />
 
             {/* Recent activity section. */}
             <DocumentPageViewRecentActivity

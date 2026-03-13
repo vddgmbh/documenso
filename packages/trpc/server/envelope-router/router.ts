@@ -3,6 +3,7 @@ import { createAttachmentRoute } from './attachment/create-attachment';
 import { deleteAttachmentRoute } from './attachment/delete-attachment';
 import { findAttachmentsRoute } from './attachment/find-attachments';
 import { updateAttachmentRoute } from './attachment/update-attachment';
+import { uploadFileRoute } from './attachment/upload-file';
 import { bulkDeleteEnvelopesRoute } from './bulk-delete-envelopes';
 import { bulkMoveEnvelopesRoute } from './bulk-move-envelopes';
 import { createEnvelopeRoute } from './create-envelope';
@@ -47,6 +48,7 @@ export const envelopeRouter = router({
     create: createAttachmentRoute,
     update: updateAttachmentRoute,
     delete: deleteAttachmentRoute,
+    uploadFile: uploadFileRoute,
   },
   item: {
     getMany: getEnvelopeItemsRoute,

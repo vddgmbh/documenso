@@ -26,6 +26,12 @@ export const ZFindAttachmentsResponseSchema = z.object({
       type: ZEnvelopeAttachmentTypeSchema,
       label: z.string(),
       data: z.string(),
+      // File-specific metadata (null for link attachments)
+      fileSize: z.number().nullable().optional(),
+      contentType: z.string().nullable().optional(),
+      hash: z.string().nullable().optional(),
+      createdAt: z.date().optional(),
+      updatedAt: z.date().optional(),
     }),
   ),
 });

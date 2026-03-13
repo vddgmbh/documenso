@@ -97,6 +97,49 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
     }),
   );
 
+  // Fetch file attachments for the envelope
+  const fileAttachments = await prisma.envelopeAttachment.findMany({
+    where: {
+      envelopeId: envelope.id,
+      type: 'file',
+    },
+  });
+
+  // Add file attachments to email attachments
+  const fileAttachmentEmailAttachments = await Promise.all(
+    fileAttachments.map(async (attachment) => {
+      // Determine storage type based on data format
+      // S3_PATH format: "path/to/file" or "s3://bucket/key"
+      // BYTES_64 format: base64 string (no prefix, just the encoded data)
+      const isS3Path = attachment.data.includes('/') || attachment.data.startsWith('s3://');
+      const storageType = isS3Path ? 'S3_PATH' : 'BYTES_64';
+
+      const file = await getFileServerSide({
+        type: (storageType as 'S3_PATH' | 'BYTES_64'),
+        data: attachment.data,
+      });
+
+      return {
+        filename: attachment.label,
+        content: Buffer.from(file),
+        contentType: attachment.contentType || 'application/octet-stream',
+      };
+    }),
+  );
+
+  // Calculate total size of all attachments
+  const totalAttachmentSize =
+    completedDocumentEmailAttachments.reduce((sum, att) => sum + att.content.length, 0) +
+    fileAttachmentEmailAttachments.reduce((sum, att) => sum + att.content.length, 0);
+
+  const MAX_EMAIL_SIZE = 25 * 1024 * 1024; // 25MB
+
+  // Combine all attachments if under size limit, otherwise only include PDFs
+  const allEmailAttachments =
+    totalAttachmentSize <= MAX_EMAIL_SIZE
+      ? [...completedDocumentEmailAttachments, ...fileAttachmentEmailAttachments]
+      : completedDocumentEmailAttachments;
+
   const assetBaseUrl = NEXT_PUBLIC_WEBAPP_URL() || 'http://localhost:3000';
 
   let documentOwnerDownloadLink = `${NEXT_PUBLIC_WEBAPP_URL()}${formatDocumentsPath(
@@ -152,7 +195,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       subject: i18n._(msg`Signing Complete!`),
       html,
       text,
-      attachments: completedDocumentEmailAttachments,
+      attachments: allEmailAttachments,
     });
 
     await prisma.documentAuditLog.create({
@@ -227,7 +270,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
             : i18n._(msg`Signing Complete!`),
         html,
         text,
-        attachments: completedDocumentEmailAttachments,
+        attachments: allEmailAttachments,
       });
 
       await prisma.documentAuditLog.create({

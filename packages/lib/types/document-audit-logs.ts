@@ -51,6 +51,11 @@ export const ZDocumentAuditLogTypeSchema = z.enum([
   'DOCUMENT_ACCESS_AUTH_2FA_REQUESTED', // When ACCESS AUTH 2FA is requested.
   'DOCUMENT_ACCESS_AUTH_2FA_VALIDATED', // When ACCESS AUTH 2FA is successfully validated.
   'DOCUMENT_ACCESS_AUTH_2FA_FAILED', // When ACCESS AUTH 2FA validation fails.
+
+  // File attachment events.
+  'FILE_ATTACHMENT_UPLOADED', // When a file attachment is uploaded.
+  'FILE_ATTACHMENT_DOWNLOADED', // When a file attachment is downloaded.
+  'FILE_ATTACHMENT_DELETED', // When a file attachment is deleted.
 ]);
 
 export const ZDocumentAuditLogEmailTypeSchema = z.enum([
@@ -715,6 +720,42 @@ export const ZDocumentAuditLogEventRecipientExpiredSchema = z.object({
   }),
 });
 
+/**
+ * Event: File attachment uploaded.
+ */
+export const ZDocumentAuditLogEventFileAttachmentUploadedSchema = z.object({
+  type: z.literal(DOCUMENT_AUDIT_LOG_TYPE.FILE_ATTACHMENT_UPLOADED),
+  data: z.object({
+    attachmentId: z.string(),
+    filename: z.string(),
+    fileSize: z.number(),
+    contentType: z.string(),
+    hash: z.string(),
+  }),
+});
+
+/**
+ * Event: File attachment downloaded.
+ */
+export const ZDocumentAuditLogEventFileAttachmentDownloadedSchema = z.object({
+  type: z.literal(DOCUMENT_AUDIT_LOG_TYPE.FILE_ATTACHMENT_DOWNLOADED),
+  data: z.object({
+    attachmentId: z.string(),
+    filename: z.string(),
+  }),
+});
+
+/**
+ * Event: File attachment deleted.
+ */
+export const ZDocumentAuditLogEventFileAttachmentDeletedSchema = z.object({
+  type: z.literal(DOCUMENT_AUDIT_LOG_TYPE.FILE_ATTACHMENT_DELETED),
+  data: z.object({
+    attachmentId: z.string(),
+    filename: z.string(),
+  }),
+});
+
 export const ZDocumentAuditLogBaseSchema = z.object({
   id: z.string(),
   createdAt: z.date(),
@@ -761,6 +802,9 @@ export const ZDocumentAuditLogSchema = ZDocumentAuditLogBaseSchema.and(
     ZDocumentAuditLogEventRecipientUpdatedSchema,
     ZDocumentAuditLogEventRecipientRemovedSchema,
     ZDocumentAuditLogEventRecipientExpiredSchema,
+    ZDocumentAuditLogEventFileAttachmentUploadedSchema,
+    ZDocumentAuditLogEventFileAttachmentDownloadedSchema,
+    ZDocumentAuditLogEventFileAttachmentDeletedSchema,
   ]),
 );
 

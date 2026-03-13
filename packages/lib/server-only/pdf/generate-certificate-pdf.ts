@@ -7,6 +7,8 @@ import { FieldType } from '@prisma/client';
 import { prop, sortBy } from 'remeda';
 import { match } from 'ts-pattern';
 
+import { prisma } from '@documenso/prisma';
+
 import { ZSupportedLanguageCodeSchema } from '../../constants/i18n';
 import type { TDocumentAuditLogBaseSchema } from '../../types/document-audit-logs';
 import { extractDocumentAuthMethods } from '../../utils/document-auth';
@@ -44,12 +46,26 @@ export const generateCertificatePdf = async (options: GenerateCertificatePdfOpti
 
   const documentLanguage = ZSupportedLanguageCodeSchema.parse(language);
 
-  const [organisationClaim, auditLogs, messages] = await Promise.all([
+  const [organisationClaim, auditLogs, messages, fileAttachments] = await Promise.all([
     getOrganisationClaimByTeamId({ teamId: envelope.teamId }),
     getDocumentCertificateAuditLogs({
       envelopeId: envelope.id,
     }),
     getTranslations(documentLanguage),
+    // Fetch file attachments for the certificate
+    prisma.envelopeAttachment.findMany({
+      where: {
+        envelopeId: envelope.id,
+        type: 'file',
+      },
+      select: {
+        id: true,
+        label: true,
+        fileSize: true,
+        hash: true,
+        contentType: true,
+      },
+    }),
   ]);
 
   i18n.loadAndActivate({
@@ -144,6 +160,12 @@ export const generateCertificatePdf = async (options: GenerateCertificatePdfOpti
     envelopeOwner,
     qrToken: envelope.qrToken,
     hidePoweredBy: organisationClaim.flags.hidePoweredBy ?? false,
+    fileAttachments: fileAttachments.map((attachment) => ({
+      label: attachment.label,
+      fileSize: attachment.fileSize,
+      hash: attachment.hash,
+      contentType: attachment.contentType,
+    })),
     pageWidth,
     pageHeight,
     i18n,
