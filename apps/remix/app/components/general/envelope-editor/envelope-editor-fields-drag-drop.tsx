@@ -27,6 +27,10 @@ import { RECIPIENT_COLOR_STYLES } from '@documenso/ui/lib/recipient-colors';
 import { cn } from '@documenso/ui/lib/utils';
 import { FRIENDLY_FIELD_TYPE } from '@documenso/ui/primitives/document-flow/types';
 
+console.log('[DEBUG] FieldType import:', FieldType);
+console.log('[DEBUG] All FieldType keys:', Object.keys(FieldType));
+console.log('[DEBUG] FLEXIBLE_RADIO value:', FieldType.FLEXIBLE_RADIO);
+
 const MIN_HEIGHT_PX = 12;
 const MIN_WIDTH_PX = 36;
 
@@ -76,6 +80,11 @@ export const fieldButtonList = [
     name: msg`Radio`,
   },
   {
+    type: FieldType.FLEXIBLE_RADIO,
+    icon: DiscIcon,
+    name: msg`Flexible Radio`,
+  },
+  {
     type: FieldType.CHECKBOX,
     icon: CheckSquareIcon,
     name: msg`Checkbox`,
@@ -85,7 +94,9 @@ export const fieldButtonList = [
     icon: ListIcon,
     name: msg`Dropdown`,
   },
-];
+] as const;
+
+console.log('[DEBUG] fieldButtonList loaded, FLEXIBLE_RADIO type:', FieldType.FLEXIBLE_RADIO);
 
 type EnvelopeEditorFieldDragDropProps = {
   selectedRecipientId: number | null;
@@ -202,6 +213,7 @@ export const EnvelopeEditorFieldDragDrop = ({
         fieldMeta: structuredClone(FIELD_META_DEFAULT_VALUES[selectedField]),
       };
 
+      console.log('[DEBUG] Creating field:', field);
       editorFields.addField(field);
 
       setIsFieldWithinBounds(false);
@@ -243,6 +255,7 @@ export const EnvelopeEditorFieldDragDrop = ({
 
   useEffect(() => {
     if (selectedField) {
+      console.log('[DEBUG] Selected field:', selectedField, 'Field bounds:', fieldBounds.current);
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('mouseup', onMouseClick);
     }
@@ -265,7 +278,10 @@ export const EnvelopeEditorFieldDragDrop = ({
             disabled={isFieldsDisabled}
             key={field.type}
             type="button"
-            onClick={() => setSelectedField(field.type)}
+            onClick={() => {
+              console.log('[DEBUG] Button clicked:', field.type, 'Disabled:', isFieldsDisabled);
+              setSelectedField(field.type);
+            }}
             onMouseDown={() => setSelectedField(field.type)}
             data-selected={selectedField === field.type ? true : undefined}
             className={cn(

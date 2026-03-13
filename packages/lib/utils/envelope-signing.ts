@@ -159,6 +159,19 @@ export const extractFieldInsertionValues = ({
         inserted: true,
       };
     })
+    .with({ type: FieldType.FLEXIBLE_RADIO }, (fieldValue) => {
+      if (fieldValue.value === null) {
+        return {
+          customText: '',
+          inserted: false,
+        };
+      }
+
+      return {
+        customText: toRadioCustomText(fieldValue.value),
+        inserted: true,
+      };
+    })
     .with({ type: FieldType.CHECKBOX }, (fieldValue) => {
       if (fieldValue.value === null || fieldValue.value.length === 0) {
         return {
