@@ -15,6 +15,10 @@ export const ZSignEnvelopeFieldValue = z.discriminatedUnion('type', [
     value: z.number().nullable().describe('The index of the selected option'),
   }),
   z.object({
+    type: z.literal(FieldType.FLEXIBLE_RADIO),
+    value: z.number().nullable().describe('The index of the selected option'),
+  }),
+  z.object({
     type: z.literal(FieldType.NUMBER),
     value: z.string().nullable(),
   }),

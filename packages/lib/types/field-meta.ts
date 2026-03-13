@@ -160,6 +160,42 @@ export const ZSignatureFieldMeta = ZBaseFieldMeta.extend({
 
 export type TSignatureFieldMeta = z.infer<typeof ZSignatureFieldMeta>;
 
+export const ZFlexibleRadioItem = z.object({
+  id: z.number(),
+  value: z.string().min(1, 'Value cannot be empty'),
+  checked: z.boolean(),
+  positionX: z.number().nonnegative('Position X must be non-negative'),
+  positionY: z.number().nonnegative('Position Y must be non-negative'),
+  width: z.number().positive('Width must be positive'),
+  height: z.number().positive('Height must be positive'),
+});
+
+export type TFlexibleRadioItem = z.infer<typeof ZFlexibleRadioItem>;
+
+export const ZFlexibleRadioFieldMeta = ZBaseFieldMeta.extend({
+  type: z.literal('flexible-radio'),
+  groupName: z.string().optional(),
+  items: z
+    .array(ZFlexibleRadioItem)
+    .min(1, 'At least one radio item is required')
+    .refine(
+      (items) => {
+        const ids = items.map((item) => item.id);
+        return ids.length === new Set(ids).size;
+      },
+      { message: 'Item IDs must be unique' },
+    )
+    .refine(
+      (items) => {
+        const checkedCount = items.filter((item) => item.checked).length;
+        return checkedCount <= 1;
+      },
+      { message: 'Only one radio item can be checked' },
+    ),
+});
+
+export type TFlexibleRadioFieldMeta = z.infer<typeof ZFlexibleRadioFieldMeta>;
+
 export const ZFieldMetaNotOptionalSchema = z.discriminatedUnion('type', [
   ZSignatureFieldMeta,
   ZInitialsFieldMeta,
@@ -171,6 +207,7 @@ export const ZFieldMetaNotOptionalSchema = z.discriminatedUnion('type', [
   ZRadioFieldMeta,
   ZCheckboxFieldMeta,
   ZDropdownFieldMeta,
+  ZFlexibleRadioFieldMeta,
 ]);
 
 export type TFieldMetaNotOptionalSchema = z.infer<typeof ZFieldMetaNotOptionalSchema>;
@@ -275,6 +312,10 @@ export const ZFieldAndMetaSchema = z.discriminatedUnion('type', [
     type: z.literal(FieldType.DROPDOWN),
     fieldMeta: ZDropdownFieldMeta.optional(),
   }),
+  z.object({
+    type: z.literal(FieldType.FLEXIBLE_RADIO),
+    fieldMeta: ZFlexibleRadioFieldMeta.optional(),
+  }),
 ]);
 
 export type TFieldAndMeta = z.infer<typeof ZFieldAndMetaSchema>;
@@ -358,6 +399,24 @@ export const FIELD_SIGNATURE_META_DEFAULT_VALUES: TSignatureFieldMeta = {
   fontSize: DEFAULT_SIGNATURE_TEXT_FONT_SIZE,
 };
 
+export const FIELD_FLEXIBLE_RADIO_META_DEFAULT_VALUES: TFlexibleRadioFieldMeta = {
+  type: 'flexible-radio',
+  fontSize: DEFAULT_FIELD_FONT_SIZE,
+  items: [
+    {
+      id: 1,
+      value: 'Option 1',
+      checked: false,
+      positionX: 0,
+      positionY: 0,
+      width: 20,
+      height: 20,
+    },
+  ],
+  required: false,
+  readOnly: false,
+};
+
 export const FIELD_META_DEFAULT_VALUES: Record<FieldType, TFieldMetaSchema> = {
   [FieldType.SIGNATURE]: FIELD_SIGNATURE_META_DEFAULT_VALUES,
   [FieldType.FREE_SIGNATURE]: undefined,
@@ -370,6 +429,7 @@ export const FIELD_META_DEFAULT_VALUES: Record<FieldType, TFieldMetaSchema> = {
   [FieldType.RADIO]: FIELD_RADIO_META_DEFAULT_VALUES,
   [FieldType.CHECKBOX]: FIELD_CHECKBOX_META_DEFAULT_VALUES,
   [FieldType.DROPDOWN]: FIELD_DROPDOWN_META_DEFAULT_VALUES,
+  [FieldType.FLEXIBLE_RADIO]: FIELD_FLEXIBLE_RADIO_META_DEFAULT_VALUES,
 } as const;
 
 export const ZEnvelopeFieldAndMetaSchema = z.discriminatedUnion('type', [
@@ -416,6 +476,10 @@ export const ZEnvelopeFieldAndMetaSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal(FieldType.DROPDOWN),
     fieldMeta: ZDropdownFieldMeta.optional().default(FIELD_DROPDOWN_META_DEFAULT_VALUES),
+  }),
+  z.object({
+    type: z.literal(FieldType.FLEXIBLE_RADIO),
+    fieldMeta: ZFlexibleRadioFieldMeta.optional().default(FIELD_FLEXIBLE_RADIO_META_DEFAULT_VALUES),
   }),
 ]);
 

@@ -5,6 +5,7 @@ import { match } from 'ts-pattern';
 
 import { validateCheckboxField } from '@documenso/lib/advanced-fields-validation/validate-checkbox';
 import { validateDropdownField } from '@documenso/lib/advanced-fields-validation/validate-dropdown';
+import { validateFlexibleRadioField } from '@documenso/lib/advanced-fields-validation/validate-flexible-radio';
 import { validateNumberField } from '@documenso/lib/advanced-fields-validation/validate-number';
 import { validateRadioField } from '@documenso/lib/advanced-fields-validation/validate-radio';
 import { validateTextField } from '@documenso/lib/advanced-fields-validation/validate-text';
@@ -19,6 +20,7 @@ import type { TRecipientActionAuth } from '../../types/document-auth';
 import {
   ZCheckboxFieldMeta,
   ZDropdownFieldMeta,
+  ZFlexibleRadioFieldMeta,
   ZNumberFieldMeta,
   ZRadioFieldMeta,
   ZTextFieldMeta,
@@ -159,6 +161,15 @@ export const signFieldWithToken = async ({
   if (field.type === FieldType.RADIO && field.fieldMeta) {
     const radioFieldParsedMeta = ZRadioFieldMeta.parse(field.fieldMeta);
     const errors = validateRadioField(value, radioFieldParsedMeta, true);
+
+    if (errors.length > 0) {
+      throw new Error(errors.join(', '));
+    }
+  }
+
+  if (field.type === FieldType.FLEXIBLE_RADIO && field.fieldMeta) {
+    const flexibleRadioFieldParsedMeta = ZFlexibleRadioFieldMeta.parse(field.fieldMeta);
+    const errors = validateFlexibleRadioField(value, flexibleRadioFieldParsedMeta, true);
 
     if (errors.length > 0) {
       throw new Error(errors.join(', '));

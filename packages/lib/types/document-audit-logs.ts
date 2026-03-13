@@ -305,6 +305,10 @@ export const ZDocumentAuditLogEventDocumentFieldInsertedSchema = z.object({
         data: z.string(),
       }),
       z.object({
+        type: z.literal(FieldType.FLEXIBLE_RADIO),
+        data: z.string(),
+      }),
+      z.object({
         type: z.literal(FieldType.CHECKBOX),
         data: z.string(),
       }),
@@ -406,6 +410,10 @@ export const ZDocumentAuditLogEventDocumentFieldPrefilledSchema = z.object({
       }),
       z.object({
         type: z.literal(FieldType.RADIO),
+        data: z.string(),
+      }),
+      z.object({
+        type: z.literal(FieldType.FLEXIBLE_RADIO),
         data: z.string(),
       }),
       z.object({

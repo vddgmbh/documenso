@@ -251,6 +251,30 @@ export const EnvelopeSignerPageRenderer = ({ pageData }: { pageData: PageRenderD
           });
         })
         /**
+         * FLEXIBLE_RADIO FIELD.
+         */
+        .with({ type: FieldType.FLEXIBLE_RADIO }, (field) => {
+          const selectedRadioIndex = Number(target.getAttr('internalRadioIndex'));
+          const fieldCustomText = Number(field.customText);
+
+          if (Number.isNaN(selectedRadioIndex)) {
+            return;
+          }
+
+          fieldGroup.add(loadingSpinnerGroup);
+
+          // Uncheck the value if it's already pressed.
+          const value =
+            field.inserted && selectedRadioIndex === fieldCustomText ? null : selectedRadioIndex;
+
+          void signField(field.id, {
+            type: FieldType.FLEXIBLE_RADIO,
+            value,
+          }).finally(() => {
+            loadingSpinnerGroup.destroy();
+          });
+        })
+        /**
          * NUMBER FIELD.
          */
         .with({ type: FieldType.NUMBER }, (field) => {

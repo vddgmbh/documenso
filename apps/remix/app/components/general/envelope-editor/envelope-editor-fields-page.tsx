@@ -21,6 +21,7 @@ import {
   type TDropdownFieldMeta,
   type TEmailFieldMeta,
   type TFieldMetaSchema,
+  type TFlexibleRadioFieldMeta,
   type TInitialsFieldMeta,
   type TNameFieldMeta,
   type TNumberFieldMeta,
@@ -40,6 +41,7 @@ import { EditorFieldCheckboxForm } from '~/components/forms/editor/editor-field-
 import { EditorFieldDateForm } from '~/components/forms/editor/editor-field-date-form';
 import { EditorFieldDropdownForm } from '~/components/forms/editor/editor-field-dropdown-form';
 import { EditorFieldEmailForm } from '~/components/forms/editor/editor-field-email-form';
+import { EditorFieldFlexibleRadioForm } from '~/components/forms/editor/editor-field-flexible-radio-form';
 import { EditorFieldInitialsForm } from '~/components/forms/editor/editor-field-initials-form';
 import { EditorFieldNameForm } from '~/components/forms/editor/editor-field-name-form';
 import { EditorFieldNumberForm } from '~/components/forms/editor/editor-field-number-form';
@@ -66,6 +68,7 @@ const FieldSettingsTypeTranslations: Record<FieldType, MessageDescriptor> = {
   [FieldType.RADIO]: msg`Radio Settings`,
   [FieldType.CHECKBOX]: msg`Checkbox Settings`,
   [FieldType.DROPDOWN]: msg`Dropdown Settings`,
+  [FieldType.FLEXIBLE_RADIO]: msg`Flexible Radio Settings`,
 };
 
 export const EnvelopeEditorFieldsPage = () => {
@@ -389,6 +392,12 @@ export const EnvelopeEditorFieldsPage = () => {
                     .with(FieldType.RADIO, () => (
                       <EditorFieldRadioForm
                         value={selectedField?.fieldMeta as TRadioFieldMeta | undefined}
+                        onValueChange={(value) => updateSelectedFieldMeta(value)}
+                      />
+                    ))
+                    .with(FieldType.FLEXIBLE_RADIO, () => (
+                      <EditorFieldFlexibleRadioForm
+                        value={selectedField?.fieldMeta as TFlexibleRadioFieldMeta | undefined}
                         onValueChange={(value) => updateSelectedFieldMeta(value)}
                       />
                     ))

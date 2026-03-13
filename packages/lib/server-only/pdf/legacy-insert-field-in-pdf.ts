@@ -20,6 +20,7 @@ import {
   ZCheckboxFieldMeta,
   ZDateFieldMeta,
   ZEmailFieldMeta,
+  ZFlexibleRadioFieldMeta,
   ZInitialsFieldMeta,
   ZNameFieldMeta,
   ZNumberFieldMeta,
@@ -296,6 +297,48 @@ export const legacy_insertFieldInPDF = async (pdf: PDFDocument, field: FieldWith
         if (selected.includes(item.value)) {
           radio.select(item.value);
         }
+      }
+    })
+    .with({ type: FieldType.FLEXIBLE_RADIO }, (field) => {
+      const meta = ZFlexibleRadioFieldMeta.safeParse(field.fieldMeta);
+
+      if (!meta.success) {
+        console.error(meta.error);
+
+        throw new Error('Invalid flexible radio field meta');
+      }
+
+      const items = meta.data.items || [];
+      const selectedIndex = field.customText ? parseInt(field.customText, 10) : -1;
+      const groupName = meta.data.groupName || `radio.${field.secondaryId}`;
+
+      // Create a single radio group for all items
+      const radioGroup = pdf.getForm().createRadioGroup(groupName);
+
+      for (const [index, item] of items.entries()) {
+        // Convert item coordinates to PDF coordinates
+        const itemX = fieldX + item.positionX;
+        const itemY = pageHeight - (fieldY + item.positionY + item.height);
+
+        // Add radio button to the group at the specified position
+        radioGroup.addOptionToPage(item.value, page, {
+          x: itemX,
+          y: itemY,
+          width: item.width,
+          height: item.height,
+          borderWidth: 0, // Invisible border for overlay design
+          backgroundColor: rgb(1, 1, 1), // White background
+        });
+
+        // Select the radio button if it matches the selected index
+        if (index === selectedIndex) {
+          radioGroup.select(item.value);
+        }
+      }
+
+      // Apply read-only if specified
+      if (meta.data.readOnly) {
+        radioGroup.enableReadOnly();
       }
     })
     .otherwise((field) => {
