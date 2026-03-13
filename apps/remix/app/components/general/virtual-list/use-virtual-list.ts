@@ -305,7 +305,7 @@ export const useVirtualList = (options: VirtualListOptions): VirtualListResult =
    * index is at the top of the viewport.
    */
   const scrollToItem = useCallback(
-    (index: number) => {
+    (index: number, behavior: ScrollBehavior = 'smooth') => {
       if (index < 0 || index >= itemCount) {
         return;
       }
@@ -318,7 +318,7 @@ export const useVirtualList = (options: VirtualListOptions): VirtualListResult =
 
         window.scrollTo({
           top: contentTop + itemOffset,
-          behavior: 'smooth',
+          behavior,
         });
       } else {
         const scrollEl = scrollRef.current;
@@ -339,7 +339,7 @@ export const useVirtualList = (options: VirtualListOptions): VirtualListResult =
 
         scrollEl.scrollTo({
           top: contentOffset + itemOffset,
-          behavior: 'smooth',
+          behavior,
         });
       }
     },

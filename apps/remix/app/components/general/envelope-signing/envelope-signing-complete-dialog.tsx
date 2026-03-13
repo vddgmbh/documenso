@@ -71,14 +71,63 @@ export const EnvelopeSignerCompleteDialog = () => {
         const fieldTooltip = document.querySelector(`#field-tooltip`);
 
         if (fieldTooltip) {
-          fieldTooltip.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-          // Tooltip not in DOM (page virtualized away) — signal the PDF viewer
-          // to scroll to the correct page via the data attribute.
-          const pdfContent = document.querySelector(PDF_VIEWER_CONTENT_SELECTOR);
+          // Check if the tooltip is visible in the viewport
+          const rect = fieldTooltip.getBoundingClientRect();
+          const isVisible =
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth);
 
-          if (pdfContent) {
-            pdfContent.setAttribute('data-scroll-to-page', String(nextField.page));
+          if (!isVisible) {
+            // Tooltip exists but not visible - scroll to the page first
+            const pdfContent = document.querySelector(PDF_VIEWER_CONTENT_SELECTOR);
+
+            if (pdfContent) {
+              pdfContent.setAttribute('data-scroll-to-page', String(nextField.page));
+            }
+          }
+
+          // Always scroll to tooltip (either immediately if visible, or after page scroll)
+          setTimeout(
+            () => {
+              fieldTooltip.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            },
+            isVisible ? 0 : 300,
+          );
+        } else {
+          // Tooltip not in DOM (page virtualized away) — jump to the page directly
+          // Query for the element with data-page-count to get the virtual list container
+          const pdfContent = document.querySelector('[data-pdf-content][data-page-count]');
+
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if (pdfContent && (pdfContent as any).__scrollToItem) {
+            // Call scrollToItem directly (pages are 1-indexed, items are 0-indexed)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (pdfContent as any).__scrollToItem(nextField.page - 1, 'auto');
+
+            // After jumping to the page, wait for render then scroll to field
+            setTimeout(() => {
+              const fieldTooltip = document.querySelector(`#field-tooltip`);
+
+              if (fieldTooltip) {
+                fieldTooltip.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              } else {
+                // Try again with a longer delay
+                setTimeout(() => {
+                  const fieldTooltip2 = document.querySelector(`#field-tooltip`);
+                  if (fieldTooltip2) {
+                    fieldTooltip2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }
+                }, 300);
+              }
+            }, 200);
+          } else {
+            // Fallback to attribute method
+            const fallbackEl = document.querySelector(PDF_VIEWER_CONTENT_SELECTOR);
+            if (fallbackEl) {
+              fallbackEl.setAttribute('data-scroll-to-page', String(nextField.page));
+            }
           }
         }
       },

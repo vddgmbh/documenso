@@ -52,12 +52,56 @@ export const validateFieldsInserted = (fields: Field[]): boolean => {
     const firstUninsertedFieldElement = document.getElementById(`field-${firstUninsertedField.id}`);
 
     if (firstUninsertedFieldElement) {
-      firstUninsertedFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Check if the field is visible in the viewport
+      const rect = firstUninsertedFieldElement.getBoundingClientRect();
+      const isVisible =
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+
+      if (!isVisible) {
+        // Field exists but not visible - scroll to the page first
+        if (pdfContent) {
+          pdfContent.setAttribute('data-scroll-to-page', String(firstUninsertedField.page));
+        }
+      }
+
+      // Always scroll to field (either immediately if visible, or after page scroll)
+      setTimeout(
+        () => {
+          firstUninsertedFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        },
+        isVisible ? 0 : 300,
+      );
     } else {
-      // Field not in DOM (page virtualized away) — signal the PDF viewer to
-      // scroll to the correct page via the data attribute.
-      if (pdfContent) {
-        pdfContent.setAttribute('data-scroll-to-page', String(firstUninsertedField.page));
+      // Field not in DOM (page virtualized away) — jump to the page directly
+      const pdfContent = document.querySelector('[data-pdf-content][data-page-count]');
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (pdfContent && (pdfContent as any).__scrollToItem) {
+        // Call scrollToItem directly (pages are 1-indexed, items are 0-indexed)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (pdfContent as any).__scrollToItem(firstUninsertedField.page - 1, 'auto');
+
+        // After jumping to the page, wait for render then scroll to field
+        setTimeout(() => {
+          const firstUninsertedFieldElement = document.getElementById(
+            `field-${firstUninsertedField.id}`,
+          );
+
+          if (firstUninsertedFieldElement) {
+            firstUninsertedFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 200);
+      } else {
+        // Fallback to attribute method
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const fallbackEl = (pdfContent ||
+          document.querySelector(PDF_VIEWER_CONTENT_SELECTOR)) as any;
+        if (fallbackEl) {
+          fallbackEl.setAttribute('data-scroll-to-page', String(firstUninsertedField.page));
+        }
       }
     }
   }
