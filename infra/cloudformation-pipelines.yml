@@ -41,8 +41,32 @@ Parameters:
     Type: String
     Description: ARN of the AWS-managed RDS secret for production
 
+  # CloudFront parameters
+  StagingCertificateArn:
+    Type: String
+    Description: ACM certificate ARN for the staging CloudFront distribution (must be in us-east-1)
+  ProductionCertificateArn:
+    Type: String
+    Description: ACM certificate ARN for the production CloudFront distribution (must be in us-east-1)
+  StagingOriginDomain:
+    Type: String
+    Description: Domain or public IP of the staging EC2 instance (e.g. ec2-1-2-3-4.eu-central-1.compute.amazonaws.com)
+  ProductionOriginDomain:
+    Type: String
+    Description: Domain or public IP of the production EC2 instance
+  StagingDomainAlias:
+    Type: String
+    Description: Custom domain alias for staging CloudFront (e.g. staging.sign.example.com)
+    Default: ''
+  ProductionDomainAlias:
+    Type: String
+    Description: Custom domain alias for production CloudFront (e.g. sign.example.com)
+    Default: ''
+
 Conditions:
   HasApprovalEmail: !Not [!Equals [!Ref ApprovalEmail, '']]
+  HasStagingAlias: !Not [!Equals [!Ref StagingDomainAlias, '']]
+  HasProductionAlias: !Not [!Equals [!Ref ProductionDomainAlias, '']]
 
 Resources:
   # ============================================================
@@ -419,6 +443,80 @@ Resources:
               InputArtifacts:
                 - Name: BuildOutput
 
+  # ============================================================
+  # CloudFront Distributions (SSL proxy, no caching)
+  # ============================================================
+
+  StagingCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: Documenso Staging — SSL proxy (no cache)
+        Aliases: !If
+          - HasStagingAlias
+          - [!Ref StagingDomainAlias]
+          - !Ref 'AWS::NoValue'
+        ViewerCertificate: !If
+          - HasStagingAlias
+          - AcmCertificateArn: !Ref StagingCertificateArn
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2021
+          - CloudFrontDefaultCertificate: true
+        HttpVersion: http2and3
+        Origins:
+          - Id: staging-ec2
+            DomainName: !Ref StagingOriginDomain
+            CustomOriginConfig:
+              HTTPPort: 3000
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+              OriginReadTimeout: 60
+              OriginKeepaliveTimeout: 5
+        DefaultCacheBehavior:
+          TargetOriginId: staging-ec2
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS, PUT, PATCH, POST, DELETE]
+          CachedMethods: [GET, HEAD]
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # CachingDisabled
+          OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3 # AllViewer
+          Compress: false
+
+  ProductionCloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: Documenso Production — SSL proxy (no cache)
+        Aliases: !If
+          - HasProductionAlias
+          - [!Ref ProductionDomainAlias]
+          - !Ref 'AWS::NoValue'
+        ViewerCertificate: !If
+          - HasProductionAlias
+          - AcmCertificateArn: !Ref ProductionCertificateArn
+            SslSupportMethod: sni-only
+            MinimumProtocolVersion: TLSv1.2_2021
+          - CloudFrontDefaultCertificate: true
+        HttpVersion: http2and3
+        Origins:
+          - Id: production-ec2
+            DomainName: !Ref ProductionOriginDomain
+            CustomOriginConfig:
+              HTTPPort: 3000
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+              OriginReadTimeout: 60
+              OriginKeepaliveTimeout: 5
+        DefaultCacheBehavior:
+          TargetOriginId: production-ec2
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD, OPTIONS, PUT, PATCH, POST, DELETE]
+          CachedMethods: [GET, HEAD]
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # CachingDisabled
+          OriginRequestPolicyId: 216adef6-5c7f-47e4-b989-5492eafa07d3 # AllViewer
+          Compress: false
+
 Outputs:
   StagingPipelineUrl:
     Value: !Sub 'https://${AWS::Region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/documenso-staging/view'
@@ -427,3 +525,9 @@ Outputs:
   EC2InstanceProfileArn:
     Value: !GetAtt EC2InstanceProfile.Arn
     Description: Attach this instance profile to your staging and production EC2 instances
+  StagingCloudFrontDomain:
+    Value: !GetAtt StagingCloudFront.DomainName
+    Description: Staging CloudFront domain — point your DNS CNAME here
+  ProductionCloudFrontDomain:
+    Value: !GetAtt ProductionCloudFront.DomainName
+    Description: Production CloudFront domain — point your DNS CNAME here
