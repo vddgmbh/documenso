@@ -23,8 +23,6 @@ hooks:
     - location: scripts/install-runtime.sh
       timeout: 300
       runas: documenso
-
-  BeforeStart:
     - location: scripts/install-systemd-service.sh
       timeout: 30
       runas: root
