@@ -51,7 +51,16 @@ DB_HOST=$(echo "$DB_SECRETS" | jq -r '.host')
 DB_PORT=$(echo "$DB_SECRETS" | jq -r '.port // "5432"')
 DB_USER=$(echo "$DB_SECRETS" | jq -r '.username')
 DB_PASS=$(echo "$DB_SECRETS" | jq -r '.password')
-DB_NAME="documenso_${ENV_NAME}"
+
+# DB name: read from app secret, fall back to the dbname in the RDS secret,
+# fall back to "documenso_<env>"
+DB_NAME=$(echo "$APP_SECRETS" | jq -r '.DB_NAME // empty')
+if [ -z "$DB_NAME" ]; then
+  DB_NAME=$(echo "$DB_SECRETS" | jq -r '.dbname // empty')
+fi
+if [ -z "$DB_NAME" ]; then
+  DB_NAME="documenso_${ENV_NAME}"
+fi
 
 # URL-encode the password (handles special chars)
 DB_PASS_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('${DB_PASS}', safe=''))")

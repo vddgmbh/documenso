@@ -30,12 +30,10 @@ Parameters:
     Default: ''
   StagingAppSecretArn:
     Type: String
-    Description: ARN of the Secrets Manager secret for staging app config
-    Default: documenso/staging/app
+    Description: Full ARN of the Secrets Manager secret for staging app config
   ProductionAppSecretArn:
     Type: String
-    Description: ARN of the Secrets Manager secret for production app config
-    Default: documenso/production/app
+    Description: Full ARN of the Secrets Manager secret for production app config
   StagingRdsSecretArn:
     Type: String
     Description: ARN of the AWS-managed RDS secret for staging
@@ -127,6 +125,7 @@ Resources:
                   - !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentconfig:*'
               - Effect: Allow
                 Action:
+                  - codeconnections:UseConnection
                   - codestar-connections:UseConnection
                 Resource: !Ref GitHubConnectionArn
               - Effect: Allow
