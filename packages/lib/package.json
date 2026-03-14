@@ -10,6 +10,8 @@
     "universal/"
   ],
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "clean": "rimraf node_modules",
@@ -69,6 +71,6 @@
     "@types/pg": "^8.15.6",
     "fast-check": "^3.23.2",
     "happy-dom": "^15.11.7",
-    "vitest": "^2.1.8"
+    "vitest": "^4.0.18"
   }
 }
