@@ -150,20 +150,20 @@ export const EnvelopeEditorPreviewPage = () => {
             };
           })
           .with({ type: FieldType.FLEXIBLE_RADIO }, ({ fieldMeta }) => {
-            const values = fieldMeta?.values ?? [];
+            const items = fieldMeta?.items ?? [];
 
-            if (values.length === 0) {
+            if (items.length === 0) {
               return '';
             }
 
             let customText = '';
 
-            const preselectedValue = values.findIndex((value) => value.checked);
+            const preselectedValue = items.findIndex((item) => item.checked);
 
             if (preselectedValue !== -1) {
               customText = preselectedValue.toString();
             } else {
-              const randomIndex = faker.number.int({ min: 0, max: values.length - 1 });
+              const randomIndex = faker.number.int({ min: 0, max: items.length - 1 });
               customText = randomIndex.toString();
             }
 
