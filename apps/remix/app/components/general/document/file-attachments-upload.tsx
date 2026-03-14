@@ -60,12 +60,11 @@ export const FileAttachmentsUpload = ({
     envelopeId,
   });
 
-  const { mutateAsync: uploadFileAttachment } =
-    trpc.envelope.attachment.uploadFile.useMutation({
-      onSuccess: () => {
-        void utils.envelope.attachment.find.invalidate({ envelopeId });
-      },
-    });
+  const { mutateAsync: uploadFileAttachment } = trpc.envelope.attachment.uploadFile.useMutation({
+    onSuccess: () => {
+      void utils.envelope.attachment.find.invalidate({ envelopeId });
+    },
+  });
 
   const { mutateAsync: deleteAttachment } = trpc.envelope.attachment.delete.useMutation({
     onSuccess: () => {
@@ -105,9 +104,7 @@ export const FileAttachmentsUpload = ({
 
         setLocalFiles((prev) =>
           prev.map((f) =>
-            f.id === localFile.id
-              ? { ...f, isUploading: false, attachmentId: result.id }
-              : f,
+            f.id === localFile.id ? { ...f, isUploading: false, attachmentId: result.id } : f,
           ),
         );
 
@@ -134,12 +131,20 @@ export const FileAttachmentsUpload = ({
   };
 
   const onDropRejected = (fileRejections: unknown[]) => {
-    const fileTooLarge = fileRejections.some((rejection: { errors: { code: string }[] }) =>
-      rejection.errors.some((error: { code: string }) => error.code === DropzoneErrorCode.FileTooLarge),
+    interface DropzoneRejection {
+      errors: { code: string }[];
+    }
+
+    const fileTooLarge = fileRejections.some((rejection) =>
+      (rejection as DropzoneRejection).errors.some(
+        (error) => error.code === DropzoneErrorCode.FileTooLarge,
+      ),
     );
 
-    const invalidType = fileRejections.some((rejection: { errors: { code: string }[] }) =>
-      rejection.errors.some((error: { code: string }) => error.code === DropzoneErrorCode.FileInvalidType),
+    const invalidType = fileRejections.some((rejection) =>
+      (rejection as DropzoneRejection).errors.some(
+        (error) => error.code === DropzoneErrorCode.FileInvalidType,
+      ),
     );
 
     if (fileTooLarge) {

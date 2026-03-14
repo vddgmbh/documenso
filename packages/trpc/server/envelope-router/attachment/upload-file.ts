@@ -12,7 +12,6 @@ export const uploadFileRoute = authenticatedProcedure
   .mutation(async ({ input, ctx }) => {
     const userId = ctx.user.id;
 
-    // Decode base64 file data
     const fileBuffer = Buffer.from(input.fileBase64, 'base64');
     const file = new File([fileBuffer], input.fileName, {
       type: input.fileType,
@@ -26,7 +25,7 @@ export const uploadFileRoute = authenticatedProcedure
       file,
       envelopeId: input.envelopeId,
       userId,
-      requestMetadata: ctx.requestMetadata,
+      requestMetadata: ctx.metadata,
     });
 
     return {

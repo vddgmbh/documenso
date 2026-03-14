@@ -598,6 +598,22 @@ export const formatDocumentAuditLogAction = (
       you: msg`You uploaded a file attachment: ${data.filename}`,
       user: msg`${user} uploaded a file attachment: ${data.filename}`,
     }))
+    .with({ type: DOCUMENT_AUDIT_LOG_TYPE.FILE_ATTACHMENT_DOWNLOADED }, ({ data }) => ({
+      anonymous: msg({
+        message: `File attachment downloaded`,
+        context: `Audit log format`,
+      }),
+      you: msg`You downloaded a file attachment: ${data.filename}`,
+      user: msg`${user} downloaded a file attachment: ${data.filename}`,
+    }))
+    .with({ type: DOCUMENT_AUDIT_LOG_TYPE.FILE_ATTACHMENT_DELETED }, ({ data }) => ({
+      anonymous: msg({
+        message: `File attachment deleted`,
+        context: `Audit log format`,
+      }),
+      you: msg`You deleted a file attachment: ${data.filename}`,
+      user: msg`${user} deleted a file attachment: ${data.filename}`,
+    }))
     .exhaustive();
 
   let selectedDescription = description.anonymous;
