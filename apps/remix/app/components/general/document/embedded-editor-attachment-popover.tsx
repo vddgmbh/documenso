@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { useCurrentEnvelopeEditor } from '@documenso/lib/client-only/providers/envelope-editor-provider';
-import { formatBytes } from '@documenso/lib/universal/format-bytes';
 import { nanoid } from '@documenso/lib/universal/id';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -119,15 +118,13 @@ export const EmbeddedEditorAttachmentPopover = ({
           {attachments.length > 0 && (
             <div className="space-y-2">
               {attachments.map((attachment) => {
-                const isFileAttachment = attachment.type === 'file';
-
                 return (
                   <div
                     key={attachment.id}
                     className="flex items-center justify-between rounded-md border border-border p-2"
                   >
                     <div className="flex min-w-0 flex-1 items-center gap-2">
-                      {isFileAttachment ? (
+                      {attachment.type === 'file' ? (
                         <FileIcon className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                       ) : (
                         <Paperclip className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
@@ -135,12 +132,7 @@ export const EmbeddedEditorAttachmentPopover = ({
 
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-medium">{attachment.label}</p>
-                        {isFileAttachment && attachment.fileSize ? (
-                          <p className="text-xs text-muted-foreground">
-                            {formatBytes(attachment.fileSize)}
-                            {attachment.contentType && ` • ${attachment.contentType.split('/')[1]}`}
-                          </p>
-                        ) : (
+                        {attachment.type !== 'file' && (
                           <a
                             href={attachment.data}
                             target="_blank"

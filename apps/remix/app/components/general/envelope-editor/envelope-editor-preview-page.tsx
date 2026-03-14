@@ -149,6 +149,28 @@ export const EnvelopeEditorPreviewPage = () => {
               customText,
             };
           })
+          .with({ type: FieldType.FLEXIBLE_RADIO }, ({ fieldMeta }) => {
+            const values = fieldMeta?.values ?? [];
+
+            if (values.length === 0) {
+              return '';
+            }
+
+            let customText = '';
+
+            const preselectedValue = values.findIndex((value) => value.checked);
+
+            if (preselectedValue !== -1) {
+              customText = preselectedValue.toString();
+            } else {
+              const randomIndex = faker.number.int({ min: 0, max: values.length - 1 });
+              customText = randomIndex.toString();
+            }
+
+            return {
+              customText,
+            };
+          })
           .with({ type: FieldType.CHECKBOX }, ({ fieldMeta }) => {
             let checkedValues: number[] = [];
 

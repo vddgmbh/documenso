@@ -41,7 +41,7 @@ export type SignFieldTextDialogProps = {
 export const SignFieldTextDialog = createCallable<SignFieldTextDialogProps, string | null>(
   ({ call, fieldMeta, currentValue }) => {
     const { t } = useLingui();
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const form = useForm<TSignFieldTextFormSchema>({
       resolver: zodResolver(ZSignFieldTextFormSchema),

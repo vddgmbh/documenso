@@ -1433,6 +1433,7 @@ export const ApiContractV1Implementation = tsr.router(ApiContractV1, {
                 error: 'FREE_SIGNATURE is not supported',
                 data: undefined,
               }))
+              .with('FLEXIBLE_RADIO', () => ZRadioFieldMeta.safeParse(fieldMeta))
               .exhaustive();
 
             if (!result.success) {

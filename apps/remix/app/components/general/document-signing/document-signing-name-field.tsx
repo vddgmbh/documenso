@@ -177,8 +177,8 @@ export const DocumentSigningNameField = ({
         ...field,
         fieldMeta: {
           ...parsedFieldMeta,
-          readOnly: isFieldReadOnly,
-        },
+          readOnly: isFieldReadOnly ?? false,
+        } as FieldWithSignature['fieldMeta'],
       }}
       onPreSign={onPreSign}
       onSign={onSign}

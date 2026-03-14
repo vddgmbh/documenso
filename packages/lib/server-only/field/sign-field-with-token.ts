@@ -319,6 +319,7 @@ export const signFieldWithToken = async ({
             .with(
               FieldType.NUMBER,
               FieldType.RADIO,
+              FieldType.FLEXIBLE_RADIO,
               FieldType.CHECKBOX,
               FieldType.DROPDOWN,
               (type) => ({

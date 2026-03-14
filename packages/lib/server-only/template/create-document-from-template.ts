@@ -98,7 +98,7 @@ export type CreateDocumentFromTemplateOptions = {
   attachments?: Array<{
     label: string;
     data: string;
-    type?: 'link';
+    type?: 'link' | 'file';
   }>;
 
   /**
