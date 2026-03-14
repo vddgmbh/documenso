@@ -293,7 +293,7 @@ export const EnvelopeEditorFieldDragDrop = ({
             <p
               className={cn(
                 'flex items-center justify-center gap-x-1.5 font-noto text-sm font-normal text-muted-foreground group-data-[selected]:text-foreground',
-                field.className,
+                'className' in field && field.className,
                 selectedRecipientStyles.fieldButtonText,
               )}
             >
