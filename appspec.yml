@@ -9,14 +9,6 @@ permissions:
   - object: /opt/documenso
     owner: documenso
     group: documenso
-    type:
-      - directory
-      - file
-
-  - object: /opt/documenso/scripts
-    owner: documenso
-    group: documenso
-    mode: '755'
 
 hooks:
   BeforeInstall:
