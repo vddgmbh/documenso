@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
 APP_DIR="/opt/documenso"
 
 echo "[Deploy] Running database migrations..."

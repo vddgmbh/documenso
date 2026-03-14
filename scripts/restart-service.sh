@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
 echo "[Deploy] Restarting documenso-remix service..."
 
 systemctl daemon-reload

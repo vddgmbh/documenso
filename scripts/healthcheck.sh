@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
 APP_DIR="/opt/documenso"
 PORT=$(grep "^PORT=" "${APP_DIR}/.env" | cut -d'=' -f2 | tr -d '"' || echo "3000")
 MAX_RETRIES=10

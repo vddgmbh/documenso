@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure standard paths are available (CodeDeploy runs with minimal PATH)
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
 APP_DIR="/opt/documenso"
 ENV_FILE="${APP_DIR}/.env"
 

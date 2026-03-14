@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
 APP_DIR="/opt/documenso"
 SERVICE_SRC="${APP_DIR}/systemd/documenso-remix.service"
 SERVICE_DST="/etc/systemd/system/documenso-remix.service"
