@@ -32,6 +32,7 @@ import { DocumentDropzone } from '@documenso/ui/primitives/document-dropzone';
 import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { EnvelopeItemDeleteDialog } from '~/components/dialogs/envelope-item-delete-dialog';
+import { FileAttachmentsUpload } from '~/components/general/document/file-attachments-upload';
 
 import { EnvelopeEditorRecipientForm } from './envelope-editor-recipient-form';
 import { EnvelopeItemTitleInput } from './envelope-editor-title-input';
@@ -509,6 +510,25 @@ export const EnvelopeEditorUploadPage = () => {
 
       {/* Recipients Section */}
       <EnvelopeEditorRecipientForm />
+
+      {/* File Attachments Section */}
+      <Card backdropBlur={false} className="border">
+        <CardHeader className="pb-3">
+          <CardTitle>
+            <Trans>File Attachments</Trans>
+          </CardTitle>
+          <CardDescription>
+            <Trans>Upload supporting documents for recipients to review</Trans>
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <FileAttachmentsUpload
+            envelopeId={envelope.id}
+            disabled={!canItemsBeModified}
+          />
+        </CardContent>
+      </Card>
 
       {editorConfig.general.allowAddFieldsStep && (
         <div className="flex justify-end">

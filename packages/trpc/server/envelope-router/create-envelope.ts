@@ -2,6 +2,7 @@ import { EnvelopeType } from '@prisma/client';
 
 import { getServerLimits } from '@documenso/ee/server-only/limits/server';
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
+import { uploadFileAttachment } from '@documenso/lib/server-only/attachment/upload-file-attachment';
 import { createEnvelope } from '@documenso/lib/server-only/envelope/create-envelope';
 import { extractPdfPlaceholders } from '@documenso/lib/server-only/pdf/auto-place-fields';
 import { normalizePdf } from '@documenso/lib/server-only/pdf/normalize-pdf';
@@ -61,7 +62,7 @@ export const createEnvelopeRouteCaller = async ({
   apiRequestMetadata,
   options = {},
 }: CreateEnvelopeRouteOptions) => {
-  const { payload, files } = input;
+  const { payload, files, attachmentFiles } = input;
 
   const {
     title,
@@ -197,6 +198,20 @@ export const createEnvelopeRouteCaller = async ({
     requestMetadata: apiRequestMetadata,
     bypassDefaultRecipients: options.bypassDefaultRecipients,
   });
+
+  // Upload file attachments if provided
+  if (attachmentFiles && attachmentFiles.length > 0) {
+    await Promise.all(
+      attachmentFiles.map((file) =>
+        uploadFileAttachment({
+          file,
+          envelopeId: envelope.id,
+          userId,
+          requestMetadata: apiRequestMetadata,
+        }),
+      ),
+    );
+  }
 
   return {
     id: envelope.id,

@@ -12,7 +12,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "clean": "rimraf node_modules"
+    "clean": "rimraf node_modules",
+    "test": "vitest"
   },
   "dependencies": {
     "@ai-sdk/google-vertex": "3.0.81",
@@ -65,6 +66,9 @@
   "devDependencies": {
     "@playwright/browser-chromium": "1.56.1",
     "@types/luxon": "^3.7.1",
-    "@types/pg": "^8.15.6"
+    "@types/pg": "^8.15.6",
+    "fast-check": "^3.23.2",
+    "happy-dom": "^15.11.7",
+    "vitest": "^2.1.8"
   }
 }

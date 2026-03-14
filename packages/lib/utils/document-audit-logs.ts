@@ -590,6 +590,14 @@ export const formatDocumentAuditLogAction = (
         user: message,
       };
     })
+    .with({ type: DOCUMENT_AUDIT_LOG_TYPE.FILE_ATTACHMENT_UPLOADED }, ({ data }) => ({
+      anonymous: msg({
+        message: `File attachment uploaded`,
+        context: `Audit log format`,
+      }),
+      you: msg`You uploaded a file attachment: ${data.filename}`,
+      user: msg`${user} uploaded a file attachment: ${data.filename}`,
+    }))
     .exhaustive();
 
   let selectedDescription = description.anonymous;

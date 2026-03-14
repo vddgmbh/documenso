@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/react/macro';
-import { ExternalLink, PaperclipIcon } from 'lucide-react';
+import { Download, ExternalLink, FileIcon, PaperclipIcon } from 'lucide-react';
 
+import { formatBytes } from '@documenso/lib/universal/format-bytes';
 import { trpc } from '@documenso/trpc/react';
 import { Button } from '@documenso/ui/primitives/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@documenso/ui/primitives/popover';
@@ -53,28 +54,52 @@ export const DocumentSigningAttachmentsPopover = ({
           </div>
 
           <div className="space-y-2">
-            {attachments?.data.map((attachment) => (
-              <a
-                key={attachment.id}
-                href={attachment.data}
-                title={attachment.data}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-border hover:bg-muted/50 group flex items-center justify-between rounded-md border px-3 py-2.5 transition duration-200"
-              >
-                <div className="flex flex-1 items-center gap-2.5">
-                  <div className="bg-muted rounded p-2">
-                    <PaperclipIcon className="h-4 w-4" />
+            {attachments?.data.map((attachment) => {
+              const isFileAttachment = attachment.type === 'file';
+              const downloadUrl = isFileAttachment
+                ? `/api/files/attachment/${attachment.id}?token=${token}`
+                : attachment.data;
+
+              return (
+                <a
+                  key={attachment.id}
+                  href={downloadUrl}
+                  title={isFileAttachment ? attachment.label : attachment.data}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download={isFileAttachment ? attachment.label : undefined}
+                  className="border-border hover:bg-muted/50 group flex items-center justify-between rounded-md border px-3 py-2.5 transition duration-200"
+                >
+                  <div className="flex flex-1 items-center gap-2.5">
+                    <div className="bg-muted rounded p-2">
+                      {isFileAttachment ? (
+                        <FileIcon className="h-4 w-4" />
+                      ) : (
+                        <PaperclipIcon className="h-4 w-4" />
+                      )}
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <span className="text-muted-foreground hover:text-foreground block truncate text-sm underline">
+                        {attachment.label}
+                      </span>
+                      {isFileAttachment && attachment.fileSize && (
+                        <span className="text-xs text-muted-foreground">
+                          {formatBytes(attachment.fileSize)}
+                          {attachment.contentType && ` • ${attachment.contentType.split('/')[1]}`}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <span className="text-muted-foreground hover:text-foreground block truncate text-sm underline">
-                    {attachment.label}
-                  </span>
-                </div>
-
-                <ExternalLink className="h-4 w-4 opacity-0 transition duration-200 group-hover:opacity-100" />
-              </a>
-            ))}
+                  {isFileAttachment ? (
+                    <Download className="h-4 w-4 opacity-0 transition duration-200 group-hover:opacity-100" />
+                  ) : (
+                    <ExternalLink className="h-4 w-4 opacity-0 transition duration-200 group-hover:opacity-100" />
+                  )}
+                </a>
+              );
+            })}
           </div>
         </div>
       </PopoverContent>

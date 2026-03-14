@@ -4,11 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { Paperclip, Plus, X } from 'lucide-react';
+import { FileIcon, Paperclip, Plus, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { useCurrentEnvelopeEditor } from '@documenso/lib/client-only/providers/envelope-editor-provider';
+import { formatBytes } from '@documenso/lib/universal/format-bytes';
 import { nanoid } from '@documenso/lib/universal/id';
 import { cn } from '@documenso/ui/lib/utils';
 import { Button } from '@documenso/ui/primitives/button';
@@ -117,33 +118,52 @@ export const EmbeddedEditorAttachmentPopover = ({
 
           {attachments.length > 0 && (
             <div className="space-y-2">
-              {attachments.map((attachment) => (
-                <div
-                  key={attachment.id}
-                  className="flex items-center justify-between rounded-md border border-border p-2"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium">{attachment.label}</p>
-                    <a
-                      href={attachment.data}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="truncate text-xs text-muted-foreground underline hover:text-foreground"
-                    >
-                      {attachment.data}
-                    </a>
-                  </div>
+              {attachments.map((attachment) => {
+                const isFileAttachment = attachment.type === 'file';
 
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onDeleteAttachment(attachment.id)}
-                    className="ml-2 h-8 w-8 p-0"
+                return (
+                  <div
+                    key={attachment.id}
+                    className="flex items-center justify-between rounded-md border border-border p-2"
                   >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
+                    <div className="flex min-w-0 flex-1 items-center gap-2">
+                      {isFileAttachment ? (
+                        <FileIcon className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                      ) : (
+                        <Paperclip className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                      )}
+
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium">{attachment.label}</p>
+                        {isFileAttachment && attachment.fileSize ? (
+                          <p className="text-xs text-muted-foreground">
+                            {formatBytes(attachment.fileSize)}
+                            {attachment.contentType && ` • ${attachment.contentType.split('/')[1]}`}
+                          </p>
+                        ) : (
+                          <a
+                            href={attachment.data}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="truncate text-xs text-muted-foreground underline hover:text-foreground"
+                          >
+                            {attachment.data}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onDeleteAttachment(attachment.id)}
+                      className="ml-2 h-8 w-8 p-0"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                );
+              })}
             </div>
           )}
 

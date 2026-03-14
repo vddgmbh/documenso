@@ -56,6 +56,12 @@ type GenerateCertificateOptions = {
     name: string;
     email: string;
   };
+  fileAttachments?: Array<{
+    label: string;
+    fileSize: number | null;
+    hash: string | null;
+    contentType: string | null;
+  }>;
   pageWidth: number;
   pageHeight: number;
 };
@@ -75,7 +81,6 @@ const getDevice = (userAgent?: string | null): string => {
   return `${result.os.name} - ${result.browser.name} ${result.browser.version}`;
 };
 
-const textMutedForegroundLight = '#929DAE';
 const textForeground = '#000';
 const textMutedForeground = '#64748B';
 const textRejectedRed = '#dc2626';
@@ -715,12 +720,151 @@ const renderTables = (options: RenderTablesOptions) => {
   return tables;
 };
 
+type RenderFileAttachmentsOptions = {
+  fileAttachments: Array<{
+    label: string;
+    fileSize: number | null;
+    hash: string | null;
+    contentType: string | null;
+  }>;
+  width: number;
+  i18n: I18n;
+};
+
+const renderFileAttachments = (options: RenderFileAttachmentsOptions) => {
+  const { fileAttachments, width, i18n } = options;
+
+  if (!fileAttachments || fileAttachments.length === 0) {
+    return null;
+  }
+
+  const group = new Konva.Group();
+  const padding = 12;
+  const sectionTitleHeight = 24;
+
+  // Section title
+  const titleText = new Konva.Text({
+    x: padding,
+    y: padding,
+    width: width - padding * 2,
+    text: i18n._(msg`File Attachments`),
+    fontFamily: 'Inter',
+    fontSize: textBase,
+    fontStyle: fontMedium,
+    fill: textForeground,
+  });
+
+  group.add(titleText);
+
+  let currentY = sectionTitleHeight + padding;
+
+  // Render each file attachment
+  for (const attachment of fileAttachments) {
+    const fileGroup = new Konva.Group({
+      y: currentY,
+    });
+
+    // File name
+    const fileNameText = new Konva.Text({
+      x: padding,
+      y: 0,
+      width: width - padding * 2,
+      text: attachment.label,
+      fontFamily: 'Inter',
+      fontSize: textSm,
+      fontStyle: fontMedium,
+      fill: textForeground,
+    });
+
+    fileGroup.add(fileNameText);
+
+    // File size and type
+    if (attachment.fileSize || attachment.contentType) {
+      const fileInfoParts = [];
+      if (attachment.fileSize) {
+        const sizeKB = (attachment.fileSize / 1024).toFixed(2);
+        fileInfoParts.push(`${sizeKB} KB`);
+      }
+      if (attachment.contentType) {
+        const extension = attachment.contentType.split('/')[1]?.toUpperCase();
+        if (extension) {
+          fileInfoParts.push(extension);
+        }
+      }
+
+      const fileInfoText = new Konva.Text({
+        x: padding,
+        y: fileNameText.height() + 2,
+        width: width - padding * 2,
+        text: fileInfoParts.join(' • '),
+        fontFamily: 'Inter',
+        fontSize: textXs,
+        fill: textMutedForeground,
+      });
+
+      fileGroup.add(fileInfoText);
+    }
+
+    // SHA-256 hash
+    if (attachment.hash) {
+      const hashLabelText = new Konva.Text({
+        x: padding,
+        y: fileGroup.getClientRect().height + 4,
+        width: width - padding * 2,
+        text: 'SHA-256:',
+        fontFamily: 'Inter',
+        fontSize: textXs,
+        fill: textMutedForeground,
+      });
+
+      fileGroup.add(hashLabelText);
+
+      const hashValueText = new Konva.Text({
+        x: padding,
+        y: fileGroup.getClientRect().height + 2,
+        width: width - padding * 2,
+        text: attachment.hash,
+        fontFamily: 'Inter',
+        fontSize: textXs,
+        fontStyle: '400',
+        fill: textMutedForeground,
+        wrap: 'word',
+      });
+
+      fileGroup.add(hashValueText);
+    }
+
+    group.add(fileGroup);
+    currentY += fileGroup.getClientRect().height + 12;
+  }
+
+  // Add background and border
+  const groupRect = group.getClientRect();
+  const bottomPadding = 12; // Add extra padding at the bottom
+  const cardRect = new Konva.Rect({
+    x: 0,
+    y: 0,
+    width: width,
+    height: groupRect.height + padding + bottomPadding,
+    stroke: '#e5e7eb',
+    strokeWidth: 1.5,
+    cornerRadius: 8,
+    fill: '#ffffff',
+  });
+
+  group.add(cardRect);
+  cardRect.moveToBottom();
+
+  return group;
+};
+
 export async function renderCertificate({
   recipients,
   qrToken,
   hidePoweredBy,
   i18n,
   envelopeOwner,
+  fileAttachments,
   pageWidth,
   pageHeight,
 }: GenerateCertificateOptions) {
@@ -752,6 +896,11 @@ export async function renderCertificate({
   });
 
   const tables = renderTables({ groupedRows, columnWidths, i18n });
+
+  // Render file attachments section if any exist
+  const fileAttachmentsSection = fileAttachments
+    ? renderFileAttachments({ fileAttachments, width: tableWidth, i18n })
+    : null;
 
   const brandingGroup = await renderBranding({ qrToken, i18n });
   const brandingRect = brandingGroup.getClientRect();
@@ -786,6 +935,17 @@ export async function renderCertificate({
 
     group.add(titleText);
     group.add(table);
+
+    // Add file attachments section on the last page if it exists
+    if (index === tables.length - 1 && fileAttachmentsSection) {
+      const attachmentsSectionTopPadding = 16;
+      fileAttachmentsSection.setAttrs({
+        x: margin,
+        y: group.getClientRect().height + attachmentsSectionTopPadding,
+      } satisfies Partial<Konva.GroupConfig>);
+
+      group.add(fileAttachmentsSection);
+    }
 
     // Add QR code and branding on the last page if there is space.
     if (index === tables.length - 1 && !hidePoweredBy) {

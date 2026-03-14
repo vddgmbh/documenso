@@ -537,6 +537,11 @@ model EnvelopeAttachment {
 
   data String
 
+  // File attachment specific fields (null for link attachments)
+  fileSize    Int?    /// File size in bytes
+  contentType String? /// MIME type
+  hash        String? /// SHA-256 hash for integrity verification
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

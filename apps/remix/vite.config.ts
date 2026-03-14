@@ -59,6 +59,8 @@ export default defineConfig({
       'playwright-core',
       '@playwright/browser-chromium',
       'pdfjs-dist',
+      'fsevents',
+      'lightningcss',
     ],
   },
   optimizeDeps: {
@@ -72,6 +74,8 @@ export default defineConfig({
       'playwright',
       'playwright-core',
       '@playwright/browser-chromium',
+      'fsevents',
+      'lightningcss',
     ],
   },
   resolve: {
