@@ -6,9 +6,9 @@ After=network.target
 Type=simple
 User=documenso
 Group=documenso
-WorkingDirectory=/opt/documenso
+WorkingDirectory=/opt/documenso/apps/remix
 EnvironmentFile=/opt/documenso/.env
-ExecStart=/usr/bin/node apps/remix/build/server/main.js
+ExecStart=/usr/bin/node build/server/main.js
 Restart=on-failure
 RestartSec=5
 StandardOutput=journal
@@ -18,7 +18,7 @@ SyslogIdentifier=documenso-remix
 # Security hardening
 NoNewPrivileges=true
 ProtectSystem=strict
-ReadWritePaths=/opt/documenso
+ReadWritePaths=/opt/documenso /opt/documenso/apps/remix
 PrivateTmp=true
 
 # Resource limits
