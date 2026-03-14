@@ -275,6 +275,13 @@ Resources:
       DeploymentGroupName: documenso-staging
       ServiceRoleArn: !GetAtt CodeDeployRole.Arn
       DeploymentConfigName: CodeDeployDefault.AllAtOnce
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events:
+          - DEPLOYMENT_FAILURE
+      DeploymentStyle:
+        DeploymentOption: WITHOUT_TRAFFIC_CONTROL
+        DeploymentType: IN_PLACE
       Ec2TagFilters:
         - Key: app
           Value: !Ref StagingInstanceTag
@@ -287,6 +294,13 @@ Resources:
       DeploymentGroupName: documenso-production
       ServiceRoleArn: !GetAtt CodeDeployRole.Arn
       DeploymentConfigName: CodeDeployDefault.AllAtOnce
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events:
+          - DEPLOYMENT_FAILURE
+      DeploymentStyle:
+        DeploymentOption: WITHOUT_TRAFFIC_CONTROL
+        DeploymentType: IN_PLACE
       Ec2TagFilters:
         - Key: app
           Value: !Ref ProductionInstanceTag
