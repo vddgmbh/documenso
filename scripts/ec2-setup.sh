@@ -26,6 +26,16 @@ echo "Node: $(node -v), npm: $(npm -v)"
 echo "[Setup] Creating documenso user..."
 sudo useradd --system --shell /bin/bash --home-dir /opt/documenso --create-home documenso || true
 
+# --- AWS CLI v2 ---
+echo "[Setup] Installing AWS CLI v2..."
+if ! command -v aws &>/dev/null; then
+  curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+  unzip -qo /tmp/awscliv2.zip -d /tmp
+  sudo /tmp/aws/install
+  rm -rf /tmp/aws /tmp/awscliv2.zip
+fi
+echo "AWS CLI: $(aws --version)"
+
 # --- App directory ---
 sudo mkdir -p /opt/documenso
 sudo chown -R documenso:documenso /opt/documenso
