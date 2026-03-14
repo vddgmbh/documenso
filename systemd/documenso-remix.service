@@ -1,0 +1,30 @@
+[Unit]
+Description=Documenso Remix App
+After=network.target
+
+[Service]
+Type=simple
+User=documenso
+Group=documenso
+WorkingDirectory=/opt/documenso
+EnvironmentFile=/opt/documenso/.env
+ExecStart=/usr/bin/node apps/remix/build/server/main.js
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=documenso-remix
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/documenso
+PrivateTmp=true
+
+# Resource limits
+LimitNOFILE=65536
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
