@@ -1,16 +1,14 @@
 version: 0.2
 
-env:
-  variables:
-    NODE_ENV: 'production'
-
 phases:
   install:
     runtime-versions:
       nodejs: 22
     commands:
       - echo "[Build] Installing dependencies..."
-      - npm ci
+      # NODE_ENV must NOT be production during install — devDependencies
+      # contain build tools (turbo, lingui, prisma, typescript, etc.)
+      - NODE_ENV=development npm ci
 
   pre_build:
     commands:
@@ -22,7 +20,7 @@ phases:
   build:
     commands:
       - echo "[Build] Building Remix app..."
-      - npm run build --filter=@documenso/remix
+      - NODE_ENV=production npm run build --filter=@documenso/remix
       - echo "[Build] Build complete."
 
   post_build:
