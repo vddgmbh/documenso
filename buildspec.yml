@@ -15,7 +15,7 @@ phases:
       - echo "[Build] Generating Prisma client..."
       - npx prisma generate --schema=packages/prisma/schema.prisma
       - echo "[Build] Compiling translations..."
-      - npm run translate:compile
+      - npx lingui compile
 
   build:
     commands:
