@@ -21,11 +21,11 @@ export const DEFAULT_RECT_BACKGROUND = 'transparent';
 // !: values of the declared variable to do all the background, border and shadow styles.
 const RECIPIENT_COLOR_STYLES: Record<TRecipientColor, () => RecipientColorStyles> = {
   readOnly: (): RecipientColorStyles => ({
-    base: 'ring-neutral-400',
-    baseRing: 'rgba(176, 176, 176, 1)',
-    baseRingHover: 'rgba(176, 176, 176, 1)',
+    base: 'ring-transparent bg-transparent',
+    baseRing: 'rgba(176, 176, 176, 0)',
+    baseRingHover: 'rgba(176, 176, 176, 0)',
     baseTextHover: 'rgba(176, 176, 176, 1)',
-    fieldButton: 'border-neutral-400 hover:border-neutral-400',
+    fieldButton: 'border-transparent hover:border-transparent',
     fieldButtonText: '',
     fieldItem: 'group/field-item rounded-[2px]',
     fieldItemInitials: '',

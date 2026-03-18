@@ -133,6 +133,7 @@ export const DocumentSigningFieldContainer = ({
     <FieldRootContainer
       color={getRecipientColorStyles(field.fieldMeta?.readOnly ? 'readOnly' : 0)}
       field={field}
+      readonly={readOnlyField}
     >
       {!field.inserted && !loading && !readOnlyField && (
         <button
