@@ -125,7 +125,7 @@ export const createEnvelopeRouteCaller = async ({
       // Todo: Embeds - Might need to add this for client-side embeds in the future.
       const { cleanedPdf, placeholders } = await extractPdfPlaceholders(normalized);
 
-      const { id: documentDataId } = await putPdfFileServerSide({
+      const { documentData } = await putPdfFileServerSide({
         name: file.name,
         type: 'application/pdf',
         arrayBuffer: async () => Promise.resolve(cleanedPdf),
@@ -133,7 +133,7 @@ export const createEnvelopeRouteCaller = async ({
 
       return {
         title: file.name,
-        documentDataId,
+        documentDataId: documentData.id,
         placeholders,
       };
     }),
@@ -202,7 +202,7 @@ export const createEnvelopeRouteCaller = async ({
   // Upload file attachments if provided
   if (attachmentFiles && attachmentFiles.length > 0) {
     await Promise.all(
-      attachmentFiles.map((file) =>
+      attachmentFiles.map(async (file) =>
         uploadFileAttachment({
           file,
           envelopeId: envelope.id,

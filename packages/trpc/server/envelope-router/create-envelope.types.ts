@@ -18,7 +18,7 @@ import {
 } from '@documenso/lib/types/field';
 import { ZEnvelopeFieldAndMetaSchema } from '@documenso/lib/types/field-meta';
 
-import { zodFormData } from '../../utils/zod-form-data';
+import { zfdFile, zodFormData } from '../../utils/zod-form-data';
 import {
   ZDocumentExternalIdSchema,
   ZDocumentTitleSchema,
@@ -94,8 +94,8 @@ export const ZCreateEnvelopePayloadSchema = z.object({
 
 export const ZCreateEnvelopeRequestSchema = zodFormData({
   payload: zfd.json(ZCreateEnvelopePayloadSchema),
-  files: zfd.repeatableOfType(zfd.file()),
-  attachmentFiles: zfd.repeatableOfType(zfd.file()).optional(),
+  files: zfd.repeatableOfType(zfdFile()),
+  attachmentFiles: zfd.repeatableOfType(zfdFile()).optional(),
 });
 
 export const ZCreateEnvelopeResponseSchema = z.object({
