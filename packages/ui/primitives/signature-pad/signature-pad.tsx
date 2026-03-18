@@ -69,12 +69,12 @@ export const SignaturePad = ({
       }
 
       // Second passthrough to just select the first avaliable tab.
-      if (drawSignatureEnabled) {
-        return 'draw';
-      }
-
       if (typedSignatureEnabled) {
         return 'text';
+      }
+
+      if (drawSignatureEnabled) {
+        return 'draw';
       }
 
       if (uploadSignatureEnabled) {
