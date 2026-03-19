@@ -61,6 +61,8 @@ export default defineConfig({
       'pdfjs-dist',
       'fsevents',
       'lightningcss',
+      '@google-cloud/kms',
+      '@google-cloud/secret-manager',
     ],
   },
   optimizeDeps: {
@@ -103,6 +105,8 @@ export default defineConfig({
         '@napi-rs/canvas',
         '@node-rs/bcrypt',
         '@aws-sdk/cloudfront-signer',
+        '@google-cloud/kms',
+        '@google-cloud/secret-manager',
         'nodemailer',
         /playwright/,
         '@playwright/browser-chromium',
