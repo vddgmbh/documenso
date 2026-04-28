@@ -8,11 +8,12 @@ import {
   DocumentDistributionMethod,
   DocumentVisibility,
   EnvelopeType,
+  RecipientRole,
   SendStatus,
   TemplateType,
 } from '@prisma/client';
 import type * as DialogPrimitive from '@radix-ui/react-dialog';
-import { InfoIcon, MailIcon, SettingsIcon, ShieldIcon } from 'lucide-react';
+import { BellRingIcon, InfoIcon, MailIcon, SettingsIcon, ShieldIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import { z } from 'zod';
@@ -25,6 +26,7 @@ import {
   DOCUMENT_SIGNATURE_TYPES,
 } from '@documenso/lib/constants/document';
 import { ZEnvelopeExpirationPeriod } from '@documenso/lib/constants/envelope-expiration';
+import { ZEnvelopeReminderSettings } from '@documenso/lib/constants/envelope-reminder';
 import {
   SUPPORTED_LANGUAGES,
   SUPPORTED_LANGUAGE_CODES,
@@ -50,6 +52,7 @@ import {
   canAccessTeamDocument,
   extractTeamSignatureSettings,
 } from '@documenso/lib/utils/teams';
+import { zEmail } from '@documenso/lib/utils/zod';
 import { trpc } from '@documenso/trpc/react';
 import { DocumentEmailCheckboxes } from '@documenso/ui/components/document/document-email-checkboxes';
 import {
@@ -67,6 +70,7 @@ import {
   DocumentVisibilityTooltip,
 } from '@documenso/ui/components/document/document-visibility-select';
 import { ExpirationPeriodPicker } from '@documenso/ui/components/document/expiration-period-picker';
+import { ReminderSettingsPicker } from '@documenso/ui/components/document/reminder-settings-picker';
 import {
   TemplateTypeSelect,
   TemplateTypeTooltip,
@@ -137,19 +141,17 @@ export const ZAddSettingsFormSchema = z.object({
       .optional()
       .default('en'),
     emailId: z.string().nullable(),
-    emailReplyTo: z.preprocess(
-      (val) => (val === '' ? undefined : val),
-      z.string().email().optional(),
-    ),
+    emailReplyTo: z.preprocess((val) => (val === '' ? undefined : val), zEmail().optional()),
     emailSettings: ZDocumentEmailSettingsSchema,
     signatureTypes: z.array(z.nativeEnum(DocumentSignatureType)).min(1, {
       message: msg`At least one signature type must be enabled`.id,
     }),
     envelopeExpirationPeriod: ZEnvelopeExpirationPeriod.nullish(),
+    reminderSettings: ZEnvelopeReminderSettings.nullish(),
   }),
 });
 
-type EnvelopeEditorSettingsTabType = 'general' | 'email' | 'security';
+type EnvelopeEditorSettingsTabType = 'general' | 'reminders' | 'email' | 'security';
 
 const tabs = [
   {
@@ -157,6 +159,12 @@ const tabs = [
     title: msg`General`,
     icon: SettingsIcon,
     description: msg`Configure document settings and options before sending.`,
+  },
+  {
+    id: 'reminders',
+    title: msg`Reminders`,
+    icon: BellRingIcon,
+    description: msg`Configure signing reminder settings for the document.`,
   },
   {
     id: 'email',
@@ -223,6 +231,7 @@ export const EnvelopeEditorSettingsDialog = ({
         emailSettings: ZDocumentEmailSettingsSchema.parse(envelope.documentMeta.emailSettings),
         signatureTypes: extractTeamSignatureSettings(envelope.documentMeta),
         envelopeExpirationPeriod: envelope.documentMeta?.envelopeExpirationPeriod ?? null,
+        reminderSettings: envelope.documentMeta?.reminderSettings ?? null,
       },
     };
   };
@@ -234,7 +243,10 @@ export const EnvelopeEditorSettingsDialog = ({
 
   const envelopeHasBeenSent =
     envelope.type === EnvelopeType.DOCUMENT &&
-    envelope.recipients.some((recipient) => recipient.sendStatus === SendStatus.SENT);
+    envelope.recipients.some(
+      (recipient) =>
+        recipient.role !== RecipientRole.CC && recipient.sendStatus === SendStatus.SENT,
+    );
 
   const emailSettings = form.watch('meta.emailSettings');
 
@@ -268,6 +280,7 @@ export const EnvelopeEditorSettingsDialog = ({
       subject,
       emailReplyTo,
       envelopeExpirationPeriod,
+      reminderSettings,
     } = data.meta;
 
     const parsedGlobalAccessAuth = z
@@ -298,6 +311,7 @@ export const EnvelopeEditorSettingsDialog = ({
           typedSignatureEnabled: signatureTypes.includes(DocumentSignatureType.TYPE),
           uploadSignatureEnabled: signatureTypes.includes(DocumentSignatureType.UPLOAD),
           envelopeExpirationPeriod,
+          reminderSettings,
         },
       });
 
@@ -376,6 +390,10 @@ export const EnvelopeEditorSettingsDialog = ({
           <nav className="col-span-12 mb-8 flex flex-wrap items-center justify-start gap-x-2 gap-y-4 px-4 md:col-span-3 md:w-full md:flex-col md:items-start md:gap-y-2">
             {tabs.map((tab) => {
               if (tab.id === 'email' && !settings.allowConfigureDistribution) {
+                return null;
+              }
+
+              if (tab.id === 'reminders' && !settings.allowConfigureReminders) {
                 return null;
               }
 
@@ -749,6 +767,44 @@ export const EnvelopeEditorSettingsDialog = ({
                       )}
                     </>
                   ))
+                  .with(
+                    { activeTab: 'reminders', settings: { allowConfigureReminders: true } },
+                    () => (
+                      <FormField
+                        control={form.control}
+                        name="meta.reminderSettings"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="flex flex-row items-center">
+                              <Trans>Signing Reminders</Trans>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <InfoIcon className="mx-2 h-4 w-4" />
+                                </TooltipTrigger>
+
+                                <TooltipContent className="max-w-xs text-muted-foreground">
+                                  <Trans>
+                                    Configure when and how often reminder emails are sent to
+                                    recipients who have not yet completed signing. Uses the team
+                                    default when set to inherit.
+                                  </Trans>
+                                </TooltipContent>
+                              </Tooltip>
+                            </FormLabel>
+
+                            <FormControl>
+                              <ReminderSettingsPicker
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    ),
+                  )
                   .with(
                     { activeTab: 'email', settings: { allowConfigureDistribution: true } },
                     () => (
