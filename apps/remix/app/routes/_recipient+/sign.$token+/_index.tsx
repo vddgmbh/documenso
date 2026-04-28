@@ -36,6 +36,7 @@ import { DocumentSigningPageViewV1 } from '~/components/general/document-signing
 import { DocumentSigningPageViewV2 } from '~/components/general/document-signing/document-signing-page-view-v2';
 import { DocumentSigningProvider } from '~/components/general/document-signing/document-signing-provider';
 import { EnvelopeSigningProvider } from '~/components/general/document-signing/envelope-signing-provider';
+import { SourceCodeFooter } from '~/components/general/source-code-footer';
 import { superLoaderJson, useSuperLoaderData } from '~/utils/super-json-loader';
 
 import type { Route } from './+types/_index';
@@ -423,6 +424,8 @@ const SigningPageV1 = ({ data }: { data: Awaited<ReturnType<typeof handleV1Loade
               includeSenderDetails={includeSenderDetails}
             />
           </div>
+
+          <SourceCodeFooter />
         </>
       </DocumentSigningAuthProvider>
     </DocumentSigningProvider>
@@ -515,6 +518,8 @@ const SigningPageV2 = ({ data }: { data: Awaited<ReturnType<typeof handleV2Loade
         >
           <DocumentSigningPageViewV2 />
         </EnvelopeRenderProvider>
+
+        <SourceCodeFooter />
       </DocumentSigningAuthProvider>
     </EnvelopeSigningProvider>
   );
