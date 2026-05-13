@@ -659,7 +659,10 @@ export const EnvelopeEditorUploadPage = () => {
         </CardHeader>
 
         <CardContent>
-          <FileAttachmentsUpload envelopeId={envelope.id} disabled={!canItemsBeModified} />
+          <FileAttachmentsUpload
+            envelopeId={envelope.id}
+            disabled={!envelopeItemPermissions.canFileBeChanged}
+          />
         </CardContent>
       </Card>
 

@@ -480,6 +480,11 @@ msgstr "{user}님이 제목이 {0}인 봉투 항목을 생성했습니다."
 msgid "{user} created the document"
 msgstr "{user}님이 문서를 생성했습니다."
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} deleted a file attachment: {0}"
+msgstr ""
+
 #. placeholder {0}: data.envelopeItemTitle
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} deleted an envelope item with title {0}"
@@ -488,6 +493,11 @@ msgstr "{user}님이 제목이 {0}인 봉투 항목을 삭제했습니다."
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} deleted the document"
 msgstr "{user}님이 문서를 삭제했습니다."
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} downloaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} failed to validate a 2FA token for the document"
@@ -587,6 +597,11 @@ msgstr "{user}가 문서 제목을 업데이트했습니다"
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} updated the document visibility"
 msgstr "{user}가 문서 공개 범위를 업데이트했습니다"
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} uploaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} validated a 2FA token for the document"
@@ -2096,6 +2111,7 @@ msgstr "첨부 파일이 성공적으로 제거되었습니다."
 #: apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
+#: apps/remix/app/components/general/document/document-page-view-attachments.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 msgid "Attachments"
@@ -4363,6 +4379,10 @@ msgstr "임시 저장된 문서"
 msgid "Drag & drop your PDF here."
 msgstr "여기에 PDF를 끌어다 놓으세요."
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Drag and drop files here, or click to select"
+msgstr ""
+
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Drag and drop or click to upload"
 msgstr "드래그 앤 드롭 또는 클릭하여 업로드"
@@ -4380,6 +4400,10 @@ msgstr "그리기"
 #: apps/remix/app/components/general/admin-global-settings-section.tsx
 msgid "Draw signature"
 msgstr "서명 그리기"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Drop files here..."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/envelope-item-edit-dialog.tsx
 msgid "Drop PDF here or click to select"
@@ -4842,6 +4866,10 @@ msgstr "클레임 이름 입력"
 msgid "Enter Email"
 msgstr "이메일을 입력하세요"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Enter group name"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/sign-field-initials-dialog.tsx
 msgid "Enter Initials"
 msgstr "이니셜을 입력하세요"
@@ -4922,6 +4950,10 @@ msgstr "봉투가 배포되었습니다"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 #: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Envelope ID"
 msgstr "봉투 ID"
 
@@ -5015,6 +5047,7 @@ msgstr "봉투가 업데이트되었습니다"
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-upload-button-legacy.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-signing/envelope-signer-page-renderer.tsx
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/envelope/envelope-upload-button.tsx
@@ -5327,6 +5360,27 @@ msgstr "필드"
 msgid "Fields updated"
 msgstr "필드가 업데이트되었습니다."
 
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment deleted"
+msgstr ""
+
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment downloaded"
+msgstr ""
+
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment uploaded"
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
+#: packages/lib/server-only/pdf/render-certificate.ts
+msgid "File Attachments"
+msgstr ""
+
 #: packages/ui/lib/handle-dropzone-rejection.tsx
 msgid "File is larger than {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgstr "파일 크기가 {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB보다 큽니다"
@@ -5335,9 +5389,25 @@ msgstr "파일 크기가 {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB보다 큽니다"
 msgid "File is too small"
 msgstr "파일이 너무 작습니다"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File removed successfully."
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "File size exceeds the limit of {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
 msgstr "파일 크기가 {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB 제한을 초과했습니다."
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File too large"
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File uploaded successfully."
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Files must be smaller than 10MB."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
@@ -5346,6 +5416,16 @@ msgstr "새 구독 클레임을 생성하려면 세부 정보를 입력하세요
 #: apps/remix/app/routes/_authenticated+/admin+/email-domains._index.tsx
 msgid "Filter by status"
 msgstr "상태로 필터링"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-drag-drop.tsx
+#: packages/lib/utils/fields.ts
+#: packages/ui/primitives/document-flow/types.ts
+msgid "Flexible Radio"
+msgstr ""
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+msgid "Flexible Radio Settings"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/envelopes-bulk-move-dialog.tsx
@@ -5590,6 +5670,10 @@ msgstr "그룹이 성공적으로 업데이트되었습니다."
 msgid "Group Name"
 msgstr "그룹 이름"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Group Name (Optional)"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 #: apps/remix/app/components/tables/organisation-members-table.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
@@ -5608,6 +5692,10 @@ msgstr "그룹"
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 msgid "Having an assistant as the last signer means they will be unable to take any action as there are no subsequent signers to assist."
 msgstr "보조자가 마지막 서명자인 경우, 이후 서명자가 없기 때문에 아무 작업도 수행할 수 없습니다."
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Height"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: packages/ui/primitives/document-flow/field-item.tsx
@@ -5945,6 +6033,10 @@ msgstr "잘못된 임베딩 매개변수"
 #: apps/remix/app/routes/embed+/v1+/authoring+/_layout.tsx
 msgid "Invalid embedding presign token provided"
 msgstr "잘못된 임베딩 사전 서명 토큰이 제공되었습니다."
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Invalid file type"
+msgstr ""
 
 #: apps/remix/app/components/general/admin-license-card.tsx
 msgid "Invalid License Key"
@@ -6554,6 +6646,10 @@ msgstr "MAU(로그인 기준)"
 msgid "Max"
 msgstr "최대"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Max 10MB per file"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Maximum file size: 4MB. Maximum 100 rows per upload. Blank values will use template defaults."
 msgstr "최대 파일 크기: 4MB. 업로드당 최대 100행. 비어 있는 값은 템플릿 기본값이 사용됩니다."
@@ -6929,6 +7025,10 @@ msgstr "조직을 찾을 수 없습니다."
 msgid "No public profile templates found"
 msgstr "공개 프로필 템플릿이 없습니다"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "No radio items yet. Click + to add one."
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-page-view-recent-activity.tsx
 msgid "No recent activity"
 msgstr "최근 활동 없음"
@@ -7153,6 +7253,10 @@ msgstr "한 번에 하나의 파일만 업로드할 수 있습니다"
 #: packages/ui/lib/handle-dropzone-rejection.tsx
 msgid "Only PDF files are allowed"
 msgstr "PDF 파일만 허용됩니다"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Only PDF, images, Office documents, and text files are allowed."
+msgstr ""
 
 #: apps/remix/app/components/general/generic-error-layout.tsx
 #: apps/remix/app/components/general/generic-error-layout.tsx
@@ -7655,6 +7759,10 @@ msgstr "자세한 정보는 상위 애플리케이션에서 확인해 주세요.
 msgid "Please check your email for updates."
 msgstr "업데이트 내용을 이메일로 확인해 주세요."
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Please check your files and try again."
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/reset-password.$token.tsx
 msgid "Please choose your new password"
 msgstr "새 비밀번호를 선택해 주세요"
@@ -7703,10 +7811,6 @@ msgstr "올바른 이름을 입력해 주세요."
 #: apps/remix/app/components/dialogs/sign-field-number-dialog.tsx
 msgid "Please enter a valid number"
 msgstr "올바른 숫자를 입력하세요"
-
-#: apps/remix/app/components/dialogs/sign-field-text-dialog.tsx
-msgid "Please enter a value"
-msgstr "값을 입력하세요"
 
 #: apps/remix/app/components/dialogs/sign-field-email-dialog.tsx
 msgid "Please enter your email address"
@@ -7846,6 +7950,10 @@ msgstr "X 위치:"
 msgid "Pos Y:"
 msgstr "Y 위치:"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Position and size each radio button on the canvas after adding items."
+msgstr ""
+
 #: apps/remix/app/components/embed/embed-direct-template-client-page.tsx
 #: apps/remix/app/components/embed/embed-document-signing-page-v1.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-mobile-widget.tsx
@@ -7983,6 +8091,10 @@ msgstr "빠른 작업"
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
 msgid "Radio"
 msgstr "라디오"
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Radio items"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 msgid "Radio Settings"
@@ -9341,6 +9453,11 @@ msgctxt "Signed document (adjective)"
 msgid "Signed"
 msgstr "서명됨"
 
+#. placeholder {0}: envelope.title
+#: packages/lib/server-only/document/send-completed-email.ts
+msgid "Signed: {0}"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope-signing/envelope-signer-header.tsx
 msgid "Signer"
 msgstr "서명자"
@@ -9375,7 +9492,6 @@ msgstr "서명 인증서"
 msgid "Signing certificate provided by"
 msgstr "서명 인증서 제공자"
 
-#: packages/lib/server-only/document/send-completed-email.ts
 #: packages/lib/server-only/document/send-completed-email.ts
 msgid "Signing Complete!"
 msgstr "서명이 완료되었습니다!"
@@ -9760,6 +9876,8 @@ msgstr "구독 상태"
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-settings-dialog.tsx
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
@@ -9809,6 +9927,10 @@ msgstr "지원"
 #: apps/remix/app/components/forms/support-ticket-form.tsx
 msgid "Support ticket created"
 msgstr "지원 티켓이 생성되었습니다"
+
+#: apps/remix/app/components/general/document/document-page-view-attachments.tsx
+msgid "Supporting documents and resources"
+msgstr ""
 
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 msgid "Sync"
@@ -11612,6 +11734,9 @@ msgid "Upload documents and add recipients"
 msgstr "문서를 업로드하고 수신자를 추가하세요"
 
 #: apps/remix/app/components/dialogs/envelope-item-edit-dialog.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/envelope/envelope-upload-button.tsx
@@ -11625,6 +11750,14 @@ msgstr "서명 업로드"
 #: packages/ui/primitives/signature-pad/signature-pad-upload.tsx
 msgid "Upload Signature"
 msgstr "서명 업로드"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Upload supporting documents (PDF, images, Office files, etc.)"
+msgstr ""
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
+msgid "Upload supporting documents for recipients to review"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: packages/ui/primitives/document-upload-button.tsx
@@ -11660,6 +11793,10 @@ msgstr "업로드된 파일이 허용된 형식이 아닙니다"
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 msgid "Uploading"
 msgstr "업로드 중"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Uploading..."
+msgstr ""
 
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
@@ -11757,6 +11894,7 @@ msgstr "검증"
 msgid "Validation failed"
 msgstr "검증 실패"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
 #: apps/remix/app/components/forms/editor/editor-field-number-form.tsx
 #: apps/remix/app/components/forms/editor/editor-field-number-form.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
@@ -12509,6 +12647,10 @@ msgstr "화이트라벨, 무제한 구성원 등"
 msgid "Who do you want to remind?"
 msgstr "누구에게 리마인더를 보내시겠습니까?"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Width"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: packages/ui/primitives/document-flow/field-item.tsx
 msgid "Width:"
@@ -12521,6 +12663,14 @@ msgstr "동의 철회"
 #: apps/remix/app/components/forms/public-profile-form.tsx
 msgid "Write a description to display on your public profile"
 msgstr "공개 프로필에 표시될 설명을 작성하세요."
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "X Position"
+msgstr ""
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Y Position"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
@@ -12865,6 +13015,11 @@ msgstr "현재 비활성 상태인 <0>{currentProductName}</0> 구독이 있습�
 msgid "You currently have no access to any teams within this organisation. Please contact your organisation to request access."
 msgstr "현재 이 조직 내 어느 팀에도 접근 권한이 없습니다. 액세스를 요청하려면 조직 관리자에게 문의해 주세요."
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You deleted a file attachment: {0}"
+msgstr ""
+
 #. placeholder {0}: data.envelopeItemTitle
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You deleted an envelope item with title {0}"
@@ -12885,6 +13040,11 @@ msgstr "결제를 관리하는 조직이 없습니다."
 #: packages/email/template-components/template-document-cancel.tsx
 msgid "You don't need to sign it anymore."
 msgstr "더 이상 이 문서에 서명할 필요가 없습니다."
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You downloaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You failed to validate a 2FA token for the document"
@@ -13262,6 +13422,11 @@ msgstr "문서 제목을 업데이트했습니다"
 msgid "You updated the document visibility"
 msgstr "문서 공개 범위를 업데이트했습니다"
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You uploaded a file attachment: {0}"
+msgstr ""
+
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You validated a 2FA token for the document"
 msgstr "문서에 대한 2FA 토큰을 검증했습니다"
@@ -13636,4 +13801,3 @@ msgstr "인증 코드:"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 msgid "your-domain.com another-domain.com"
 msgstr "your-domain.com another-domain.com"
-

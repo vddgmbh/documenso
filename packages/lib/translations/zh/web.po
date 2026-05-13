@@ -480,6 +480,11 @@ msgstr "{user} 创建了一个标题为 {0} 的信封项目"
 msgid "{user} created the document"
 msgstr "{user} 创建了该文档"
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} deleted a file attachment: {0}"
+msgstr ""
+
 #. placeholder {0}: data.envelopeItemTitle
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} deleted an envelope item with title {0}"
@@ -488,6 +493,11 @@ msgstr "{user} 删除了一个标题为 {0} 的信封项目"
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} deleted the document"
 msgstr "{user} 删除了该文档"
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} downloaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} failed to validate a 2FA token for the document"
@@ -587,6 +597,11 @@ msgstr "{user} 更新了此文档的标题"
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} updated the document visibility"
 msgstr "{user} 更新了此文档的可见性"
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} uploaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} validated a 2FA token for the document"
@@ -2096,6 +2111,7 @@ msgstr "附件删除成功。"
 #: apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
+#: apps/remix/app/components/general/document/document-page-view-attachments.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 msgid "Attachments"
@@ -4363,6 +4379,10 @@ msgstr "草稿文档数量"
 msgid "Drag & drop your PDF here."
 msgstr "将 PDF 拖放到此处。"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Drag and drop files here, or click to select"
+msgstr ""
+
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Drag and drop or click to upload"
 msgstr "拖放或点击以上传"
@@ -4380,6 +4400,10 @@ msgstr "绘制"
 #: apps/remix/app/components/general/admin-global-settings-section.tsx
 msgid "Draw signature"
 msgstr "手写签名"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Drop files here..."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/envelope-item-edit-dialog.tsx
 msgid "Drop PDF here or click to select"
@@ -4842,6 +4866,10 @@ msgstr "输入声明名称"
 msgid "Enter Email"
 msgstr "输入邮箱"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Enter group name"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/sign-field-initials-dialog.tsx
 msgid "Enter Initials"
 msgstr "输入姓名首字母"
@@ -4922,6 +4950,10 @@ msgstr "信封已分发"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 #: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Envelope ID"
 msgstr "信封 ID"
 
@@ -5015,6 +5047,7 @@ msgstr "信封已更新"
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-upload-button-legacy.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-signing/envelope-signer-page-renderer.tsx
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/envelope/envelope-upload-button.tsx
@@ -5327,6 +5360,27 @@ msgstr "字段"
 msgid "Fields updated"
 msgstr "字段已更新"
 
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment deleted"
+msgstr ""
+
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment downloaded"
+msgstr ""
+
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment uploaded"
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
+#: packages/lib/server-only/pdf/render-certificate.ts
+msgid "File Attachments"
+msgstr ""
+
 #: packages/ui/lib/handle-dropzone-rejection.tsx
 msgid "File is larger than {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgstr "文件大于 {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
@@ -5335,9 +5389,25 @@ msgstr "文件大于 {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgid "File is too small"
 msgstr "文件太小"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File removed successfully."
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "File size exceeds the limit of {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
 msgstr "文件大小超过 {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB 限制"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File too large"
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File uploaded successfully."
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Files must be smaller than 10MB."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
@@ -5346,6 +5416,16 @@ msgstr "填写详细信息以创建新的订阅声明。"
 #: apps/remix/app/routes/_authenticated+/admin+/email-domains._index.tsx
 msgid "Filter by status"
 msgstr "按状态筛选"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-drag-drop.tsx
+#: packages/lib/utils/fields.ts
+#: packages/ui/primitives/document-flow/types.ts
+msgid "Flexible Radio"
+msgstr ""
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+msgid "Flexible Radio Settings"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/envelopes-bulk-move-dialog.tsx
@@ -5590,6 +5670,10 @@ msgstr "组已成功更新"
 msgid "Group Name"
 msgstr "组名"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Group Name (Optional)"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 #: apps/remix/app/components/tables/organisation-members-table.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
@@ -5608,6 +5692,10 @@ msgstr "组"
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 msgid "Having an assistant as the last signer means they will be unable to take any action as there are no subsequent signers to assist."
 msgstr "将助理设置为最后一位签署人意味着 TA 将无法执行任何操作，因为没有后续签署人可供协助。"
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Height"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: packages/ui/primitives/document-flow/field-item.tsx
@@ -5945,6 +6033,10 @@ msgstr "嵌入参数无效"
 #: apps/remix/app/routes/embed+/v1+/authoring+/_layout.tsx
 msgid "Invalid embedding presign token provided"
 msgstr "提供的嵌入预签名令牌无效"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Invalid file type"
+msgstr ""
 
 #: apps/remix/app/components/general/admin-license-card.tsx
 msgid "Invalid License Key"
@@ -6554,6 +6646,10 @@ msgstr "月活跃用户（已登录）"
 msgid "Max"
 msgstr "最大值"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Max 10MB per file"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Maximum file size: 4MB. Maximum 100 rows per upload. Blank values will use template defaults."
 msgstr "最大文件大小：4MB。每次上传最多 100 行。空值将使用模板默认值。"
@@ -6929,6 +7025,10 @@ msgstr "未找到组织"
 msgid "No public profile templates found"
 msgstr "未找到公开资料模板"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "No radio items yet. Click + to add one."
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-page-view-recent-activity.tsx
 msgid "No recent activity"
 msgstr "暂无最近活动"
@@ -7153,6 +7253,10 @@ msgstr "一次只能上传一个文件"
 #: packages/ui/lib/handle-dropzone-rejection.tsx
 msgid "Only PDF files are allowed"
 msgstr "只允许上传 PDF 文件"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Only PDF, images, Office documents, and text files are allowed."
+msgstr ""
 
 #: apps/remix/app/components/general/generic-error-layout.tsx
 #: apps/remix/app/components/general/generic-error-layout.tsx
@@ -7655,6 +7759,10 @@ msgstr "更多信息请查看父应用程序。"
 msgid "Please check your email for updates."
 msgstr "请留意邮箱更新。"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Please check your files and try again."
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/reset-password.$token.tsx
 msgid "Please choose your new password"
 msgstr "请选择你的新密码"
@@ -7703,10 +7811,6 @@ msgstr "请输入有效姓名。"
 #: apps/remix/app/components/dialogs/sign-field-number-dialog.tsx
 msgid "Please enter a valid number"
 msgstr "请输入有效的数字"
-
-#: apps/remix/app/components/dialogs/sign-field-text-dialog.tsx
-msgid "Please enter a value"
-msgstr "请输入一个值"
 
 #: apps/remix/app/components/dialogs/sign-field-email-dialog.tsx
 msgid "Please enter your email address"
@@ -7846,6 +7950,10 @@ msgstr "X 轴位置："
 msgid "Pos Y:"
 msgstr "Y 轴位置："
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Position and size each radio button on the canvas after adding items."
+msgstr ""
+
 #: apps/remix/app/components/embed/embed-direct-template-client-page.tsx
 #: apps/remix/app/components/embed/embed-document-signing-page-v1.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-mobile-widget.tsx
@@ -7983,6 +8091,10 @@ msgstr "快速操作"
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
 msgid "Radio"
 msgstr "单选"
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Radio items"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 msgid "Radio Settings"
@@ -9341,6 +9453,11 @@ msgctxt "Signed document (adjective)"
 msgid "Signed"
 msgstr "已签署"
 
+#. placeholder {0}: envelope.title
+#: packages/lib/server-only/document/send-completed-email.ts
+msgid "Signed: {0}"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope-signing/envelope-signer-header.tsx
 msgid "Signer"
 msgstr "签署人"
@@ -9375,7 +9492,6 @@ msgstr "签署证书"
 msgid "Signing certificate provided by"
 msgstr "签署证书由以下机构提供"
 
-#: packages/lib/server-only/document/send-completed-email.ts
 #: packages/lib/server-only/document/send-completed-email.ts
 msgid "Signing Complete!"
 msgstr "签署完成！"
@@ -9760,6 +9876,8 @@ msgstr "订阅状态"
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-settings-dialog.tsx
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
@@ -9809,6 +9927,10 @@ msgstr "支持"
 #: apps/remix/app/components/forms/support-ticket-form.tsx
 msgid "Support ticket created"
 msgstr "支持工单已创建"
+
+#: apps/remix/app/components/general/document/document-page-view-attachments.tsx
+msgid "Supporting documents and resources"
+msgstr ""
 
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 msgid "Sync"
@@ -11612,6 +11734,9 @@ msgid "Upload documents and add recipients"
 msgstr "上传文档并添加收件人"
 
 #: apps/remix/app/components/dialogs/envelope-item-edit-dialog.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/envelope/envelope-upload-button.tsx
@@ -11625,6 +11750,14 @@ msgstr "上传签名"
 #: packages/ui/primitives/signature-pad/signature-pad-upload.tsx
 msgid "Upload Signature"
 msgstr "上传签名"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Upload supporting documents (PDF, images, Office files, etc.)"
+msgstr ""
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
+msgid "Upload supporting documents for recipients to review"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: packages/ui/primitives/document-upload-button.tsx
@@ -11660,6 +11793,10 @@ msgstr "上传的文件类型不被允许"
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 msgid "Uploading"
 msgstr "正在上传"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Uploading..."
+msgstr ""
 
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
@@ -11757,6 +11894,7 @@ msgstr "校验"
 msgid "Validation failed"
 msgstr "验证失败"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
 #: apps/remix/app/components/forms/editor/editor-field-number-form.tsx
 #: apps/remix/app/components/forms/editor/editor-field-number-form.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
@@ -12509,6 +12647,10 @@ msgstr "白标、自定义域、无限成员等更多功能"
 msgid "Who do you want to remind?"
 msgstr "你想提醒谁？"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Width"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: packages/ui/primitives/document-flow/field-item.tsx
 msgid "Width:"
@@ -12521,6 +12663,14 @@ msgstr "撤回同意"
 #: apps/remix/app/components/forms/public-profile-form.tsx
 msgid "Write a description to display on your public profile"
 msgstr "撰写将在您的公共主页上展示的简介"
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "X Position"
+msgstr ""
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Y Position"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
@@ -12865,6 +13015,11 @@ msgstr "您当前有一个未激活的 <0>{currentProductName}</0> 订阅。"
 msgid "You currently have no access to any teams within this organisation. Please contact your organisation to request access."
 msgstr "您当前对该组织内的任何团队都没有访问权限。请联系您的组织以申请访问。"
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You deleted a file attachment: {0}"
+msgstr ""
+
 #. placeholder {0}: data.envelopeItemTitle
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You deleted an envelope item with title {0}"
@@ -12885,6 +13040,11 @@ msgstr "您目前未为任何组织管理计费。"
 #: packages/email/template-components/template-document-cancel.tsx
 msgid "You don't need to sign it anymore."
 msgstr "您不再需要签署该文档。"
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You downloaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You failed to validate a 2FA token for the document"
@@ -13262,6 +13422,11 @@ msgstr "你更新了此文档的标题"
 msgid "You updated the document visibility"
 msgstr "你更新了此文档的可见性"
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You uploaded a file attachment: {0}"
+msgstr ""
+
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You validated a 2FA token for the document"
 msgstr "你验证了此文档的双重验证 (2FA) 令牌"
@@ -13636,4 +13801,3 @@ msgstr "您的验证码："
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 msgid "your-domain.com another-domain.com"
 msgstr "your-domain.com another-domain.com"
-

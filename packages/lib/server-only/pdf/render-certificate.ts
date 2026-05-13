@@ -970,7 +970,7 @@ export async function renderCertificate({
       text: `${i18n._(msg`Envelope ID`)}: ${envelopeId}`,
       fontFamily: 'Inter',
       fontSize: textXs,
-      fill: textMutedForegroundLight,
+      fill: textMutedForeground,
     });
     page.add(footerText);
 
@@ -998,7 +998,7 @@ export async function renderCertificate({
       text: `${i18n._(msg`Envelope ID`)}: ${envelopeId}`,
       fontFamily: 'Inter',
       fontSize: textXs,
-      fill: textMutedForegroundLight,
+      fill: textMutedForeground,
     });
     page.add(overflowFooterText);
 

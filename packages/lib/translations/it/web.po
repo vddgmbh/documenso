@@ -480,6 +480,11 @@ msgstr "{user} ha creato un elemento della busta con titolo {0}"
 msgid "{user} created the document"
 msgstr "{user} ha creato il documento"
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} deleted a file attachment: {0}"
+msgstr ""
+
 #. placeholder {0}: data.envelopeItemTitle
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} deleted an envelope item with title {0}"
@@ -488,6 +493,11 @@ msgstr "{user} ha eliminato un elemento della busta con titolo {0}"
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} deleted the document"
 msgstr "{user} ha eliminato il documento"
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} downloaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} failed to validate a 2FA token for the document"
@@ -587,6 +597,11 @@ msgstr "{user} ha aggiornato il titolo del documento"
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} updated the document visibility"
 msgstr "{user} ha aggiornato la visibilità del documento"
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "{user} uploaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "{user} validated a 2FA token for the document"
@@ -2096,6 +2111,7 @@ msgstr "Allegato rimosso con successo."
 #: apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
+#: apps/remix/app/components/general/document/document-page-view-attachments.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 msgid "Attachments"
@@ -4363,6 +4379,10 @@ msgstr "Documenti redatti"
 msgid "Drag & drop your PDF here."
 msgstr "Trascina e rilascia il tuo PDF qui."
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Drag and drop files here, or click to select"
+msgstr ""
+
 #: apps/remix/app/components/embed/authoring/configure-document-upload.tsx
 msgid "Drag and drop or click to upload"
 msgstr "Trascina e rilascia o fai clic per caricare"
@@ -4380,6 +4400,10 @@ msgstr "Disegna"
 #: apps/remix/app/components/general/admin-global-settings-section.tsx
 msgid "Draw signature"
 msgstr "Disegna firma"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Drop files here..."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/envelope-item-edit-dialog.tsx
 msgid "Drop PDF here or click to select"
@@ -4842,6 +4866,10 @@ msgstr "Inserisci nome richiesta"
 msgid "Enter Email"
 msgstr "Inserisci l'email"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Enter group name"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/sign-field-initials-dialog.tsx
 msgid "Enter Initials"
 msgstr "Inserisci le iniziali"
@@ -4922,6 +4950,10 @@ msgstr "Busta distribuita"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 #: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Envelope ID"
 msgstr "ID Busta"
 
@@ -5015,6 +5047,7 @@ msgstr "Busta aggiornata"
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-edit-form.tsx
 #: apps/remix/app/components/general/document/document-upload-button-legacy.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-signing/envelope-signer-page-renderer.tsx
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/envelope/envelope-upload-button.tsx
@@ -5327,6 +5360,27 @@ msgstr "Campi"
 msgid "Fields updated"
 msgstr "Campi aggiornati"
 
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment deleted"
+msgstr ""
+
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment downloaded"
+msgstr ""
+
+#: packages/lib/utils/document-audit-logs.ts
+msgctxt "Audit log format"
+msgid "File attachment uploaded"
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
+#: packages/lib/server-only/pdf/render-certificate.ts
+msgid "File Attachments"
+msgstr ""
+
 #: packages/ui/lib/handle-dropzone-rejection.tsx
 msgid "File is larger than {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgstr "Il file è più grande di {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
@@ -5335,9 +5389,25 @@ msgstr "Il file è più grande di {APP_DOCUMENT_UPLOAD_SIZE_LIMIT}MB"
 msgid "File is too small"
 msgstr "Il file è troppo piccolo"
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File removed successfully."
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 msgid "File size exceeds the limit of {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
 msgstr "La dimensione del file supera il limite di {APP_DOCUMENT_UPLOAD_SIZE_LIMIT} MB"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File too large"
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "File uploaded successfully."
+msgstr ""
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Files must be smaller than 10MB."
+msgstr ""
 
 #: apps/remix/app/components/dialogs/claim-create-dialog.tsx
 msgid "Fill in the details to create a new subscription claim."
@@ -5346,6 +5416,16 @@ msgstr "Compila i dettagli per creare una nuova rivendicazione di abbonamento."
 #: apps/remix/app/routes/_authenticated+/admin+/email-domains._index.tsx
 msgid "Filter by status"
 msgstr "Filtra per stato"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-drag-drop.tsx
+#: packages/lib/utils/fields.ts
+#: packages/ui/primitives/document-flow/types.ts
+msgid "Flexible Radio"
+msgstr ""
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+msgid "Flexible Radio Settings"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/document-move-to-folder-dialog.tsx
 #: apps/remix/app/components/dialogs/envelopes-bulk-move-dialog.tsx
@@ -5590,6 +5670,10 @@ msgstr "Il gruppo è stato aggiornato con successo."
 msgid "Group Name"
 msgstr "Nome del gruppo"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Group Name (Optional)"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/team-group-create-dialog.tsx
 #: apps/remix/app/components/tables/organisation-members-table.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
@@ -5608,6 +5692,10 @@ msgstr "Gruppi"
 #: packages/ui/primitives/template-flow/add-template-placeholder-recipients.tsx
 msgid "Having an assistant as the last signer means they will be unable to take any action as there are no subsequent signers to assist."
 msgstr "Avere un assistente come ultimo firmatario significa che non saranno in grado di intraprendere alcuna azione poiché non ci sono firmatari successivi da assistere."
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Height"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: packages/ui/primitives/document-flow/field-item.tsx
@@ -5945,6 +6033,10 @@ msgstr "Parametri di embedding non validi"
 #: apps/remix/app/routes/embed+/v1+/authoring+/_layout.tsx
 msgid "Invalid embedding presign token provided"
 msgstr "Token di presign per l’incorporamento non valido"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Invalid file type"
+msgstr ""
 
 #: apps/remix/app/components/general/admin-license-card.tsx
 msgid "Invalid License Key"
@@ -6554,6 +6646,10 @@ msgstr "MAU (autenticati)"
 msgid "Max"
 msgstr ""
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Max 10MB per file"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Maximum file size: 4MB. Maximum 100 rows per upload. Blank values will use template defaults."
 msgstr "Dimensione massima del file: 4MB. Massimo 100 righe per caricamento. I valori vuoti utilizzeranno i valori predefiniti del modello."
@@ -6929,6 +7025,10 @@ msgstr "Nessuna organizzazione trovata"
 msgid "No public profile templates found"
 msgstr "Nessun modello di profilo pubblico trovato"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "No radio items yet. Click + to add one."
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-page-view-recent-activity.tsx
 msgid "No recent activity"
 msgstr "Nessuna attività recente"
@@ -7153,6 +7253,10 @@ msgstr "È possibile caricare un solo file alla volta"
 #: packages/ui/lib/handle-dropzone-rejection.tsx
 msgid "Only PDF files are allowed"
 msgstr "Sono consentiti solo file PDF"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Only PDF, images, Office documents, and text files are allowed."
+msgstr ""
 
 #: apps/remix/app/components/general/generic-error-layout.tsx
 #: apps/remix/app/components/general/generic-error-layout.tsx
@@ -7655,6 +7759,10 @@ msgstr "Controlla con l'applicazione principale per ulteriori informazioni."
 msgid "Please check your email for updates."
 msgstr "Per favore controlla la tua email per aggiornamenti."
 
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Please check your files and try again."
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/reset-password.$token.tsx
 msgid "Please choose your new password"
 msgstr "Per favore scegli la tua nuova password"
@@ -7703,10 +7811,6 @@ msgstr "Per favore inserisci un nome valido."
 #: apps/remix/app/components/dialogs/sign-field-number-dialog.tsx
 msgid "Please enter a valid number"
 msgstr "Per favore inserisci un numero valido"
-
-#: apps/remix/app/components/dialogs/sign-field-text-dialog.tsx
-msgid "Please enter a value"
-msgstr "Inserisci un valore"
 
 #: apps/remix/app/components/dialogs/sign-field-email-dialog.tsx
 msgid "Please enter your email address"
@@ -7846,6 +7950,10 @@ msgstr "Pos X:"
 msgid "Pos Y:"
 msgstr "Pos Y:"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Position and size each radio button on the canvas after adding items."
+msgstr ""
+
 #: apps/remix/app/components/embed/embed-direct-template-client-page.tsx
 #: apps/remix/app/components/embed/embed-document-signing-page-v1.tsx
 #: apps/remix/app/components/general/document-signing/document-signing-mobile-widget.tsx
@@ -7983,6 +8091,10 @@ msgstr "Azioni rapide"
 #: packages/ui/primitives/template-flow/add-template-fields.tsx
 msgid "Radio"
 msgstr "Radio"
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Radio items"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 msgid "Radio Settings"
@@ -9341,6 +9453,11 @@ msgctxt "Signed document (adjective)"
 msgid "Signed"
 msgstr "Firmato"
 
+#. placeholder {0}: envelope.title
+#: packages/lib/server-only/document/send-completed-email.ts
+msgid "Signed: {0}"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope-signing/envelope-signer-header.tsx
 msgid "Signer"
 msgstr "Firmatario"
@@ -9375,7 +9492,6 @@ msgstr "Certificato di Firma"
 msgid "Signing certificate provided by"
 msgstr "Certificato di firma fornito da"
 
-#: packages/lib/server-only/document/send-completed-email.ts
 #: packages/lib/server-only/document/send-completed-email.ts
 msgid "Signing Complete!"
 msgstr "Firma completata!"
@@ -9760,6 +9876,8 @@ msgstr "Stato dell’abbonamento"
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-settings-dialog.tsx
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
@@ -9809,6 +9927,10 @@ msgstr "Assistenza"
 #: apps/remix/app/components/forms/support-ticket-form.tsx
 msgid "Support ticket created"
 msgstr "Ticket di supporto creato"
+
+#: apps/remix/app/components/general/document/document-page-view-attachments.tsx
+msgid "Supporting documents and resources"
+msgstr ""
 
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 msgid "Sync"
@@ -11612,6 +11734,9 @@ msgid "Upload documents and add recipients"
 msgstr "Carica documenti e aggiungi destinatari"
 
 #: apps/remix/app/components/dialogs/envelope-item-edit-dialog.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: apps/remix/app/components/general/envelope/envelope-upload-button.tsx
@@ -11625,6 +11750,14 @@ msgstr "Carica firma"
 #: packages/ui/primitives/signature-pad/signature-pad-upload.tsx
 msgid "Upload Signature"
 msgstr "Carica Firma"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Upload supporting documents (PDF, images, Office files, etc.)"
+msgstr ""
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-upload-page.tsx
+msgid "Upload supporting documents for recipients to review"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: packages/ui/primitives/document-upload-button.tsx
@@ -11660,6 +11793,10 @@ msgstr "Il file caricato non è di un tipo di file consentito"
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 msgid "Uploading"
 msgstr "Caricamento in corso"
+
+#: apps/remix/app/components/general/document/file-attachments-upload.tsx
+msgid "Uploading..."
+msgstr ""
 
 #: apps/remix/app/components/general/document/document-attachments-popover.tsx
 #: apps/remix/app/components/general/document/embedded-editor-attachment-popover.tsx
@@ -11757,6 +11894,7 @@ msgstr "Validazione"
 msgid "Validation failed"
 msgstr "Validazione fallita"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
 #: apps/remix/app/components/forms/editor/editor-field-number-form.tsx
 #: apps/remix/app/components/forms/editor/editor-field-number-form.tsx
 #: apps/remix/app/components/tables/admin-document-recipient-item-table.tsx
@@ -12509,6 +12647,10 @@ msgstr "White label, membri illimitati e altro"
 msgid "Who do you want to remind?"
 msgstr "Chi vuoi ricordare?"
 
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Width"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: packages/ui/primitives/document-flow/field-item.tsx
 msgid "Width:"
@@ -12521,6 +12663,14 @@ msgstr "Ritiro del consenso"
 #: apps/remix/app/components/forms/public-profile-form.tsx
 msgid "Write a description to display on your public profile"
 msgstr "Scrivi una descrizione da mostrare sul tuo profilo pubblico"
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "X Position"
+msgstr ""
+
+#: apps/remix/app/components/forms/editor/editor-field-flexible-radio-form.tsx
+msgid "Y Position"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/organisation-create-dialog.tsx
 #: apps/remix/app/components/general/billing-plans.tsx
@@ -12865,6 +13015,11 @@ msgstr "Al momento hai un abbonamento <0>{currentProductName}</0> non attivo."
 msgid "You currently have no access to any teams within this organisation. Please contact your organisation to request access."
 msgstr "Attualmente non hai accesso a nessun team all'interno di questa organizzazione. Si prega di contattare la tua organizzazione per richiedere l'accesso."
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You deleted a file attachment: {0}"
+msgstr ""
+
 #. placeholder {0}: data.envelopeItemTitle
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You deleted an envelope item with title {0}"
@@ -12885,6 +13040,11 @@ msgstr "Non gestisci la fatturazione per nessuna organizzazione."
 #: packages/email/template-components/template-document-cancel.tsx
 msgid "You don't need to sign it anymore."
 msgstr "Non hai più bisogno di firmarlo."
+
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You downloaded a file attachment: {0}"
+msgstr ""
 
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You failed to validate a 2FA token for the document"
@@ -13262,6 +13422,11 @@ msgstr "Hai aggiornato il titolo del documento"
 msgid "You updated the document visibility"
 msgstr "Hai aggiornato la visibilità del documento"
 
+#. placeholder {0}: data.filename
+#: packages/lib/utils/document-audit-logs.ts
+msgid "You uploaded a file attachment: {0}"
+msgstr ""
+
 #: packages/lib/utils/document-audit-logs.ts
 msgid "You validated a 2FA token for the document"
 msgstr "Hai convalidato un token 2FA per il documento"
@@ -13636,4 +13801,3 @@ msgstr "Il tuo codice di verifica:"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 msgid "your-domain.com another-domain.com"
 msgstr "tuo-dominio.com altro-dominio.com"
-
