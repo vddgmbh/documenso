@@ -8,6 +8,7 @@ import { ZSignDocumentEmbedDataSchema } from '@documenso/lib/types/embed-documen
 import { mapSecondaryIdToDocumentId } from '@documenso/lib/utils/envelope';
 import { dynamicActivate } from '@documenso/lib/utils/i18n';
 
+import { SourceCodeFooter } from '~/components/general/source-code-footer';
 import { injectCss } from '~/utils/css-vars';
 
 import { DocumentSigningPageViewV2 } from '../general/document-signing/document-signing-page-view-v2';
@@ -255,6 +256,8 @@ export const EmbedSignDocumentV2ClientPage = ({
 
         <DocumentSigningPageViewV2 />
       </div>
+
+      <SourceCodeFooter />
     </EmbedSigningProvider>
   );
 };
