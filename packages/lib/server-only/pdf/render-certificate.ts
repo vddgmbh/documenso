@@ -49,6 +49,7 @@ export type CertificateRecipient = {
 
 type GenerateCertificateOptions = {
   recipients: CertificateRecipient[];
+  envelopeId: string;
   qrToken: string | null;
   hidePoweredBy: boolean;
   i18n: I18n;
@@ -93,7 +94,7 @@ const columnWidthPercentages = [30, 30, 40];
 const rowPadding = 12;
 const tableHeaderHeight = 38;
 const pageTopMargin = 72;
-const pageBottomMargin = 12;
+const pageBottomMargin = 24;
 const contentMaxWidth = 768;
 
 const titleFontSize = 18;
@@ -860,6 +861,7 @@ const renderFileAttachments = (options: RenderFileAttachmentsOptions) => {
 
 export async function renderCertificate({
   recipients,
+  envelopeId,
   qrToken,
   hidePoweredBy,
   i18n,
@@ -962,6 +964,16 @@ export async function renderCertificate({
       }
     }
 
+    const footerText = new Konva.Text({
+      x: margin,
+      y: pageHeight - textXs - 10,
+      text: `${i18n._(msg`Envelope ID`)}: ${envelopeId}`,
+      fontFamily: 'Inter',
+      fontSize: textXs,
+      fill: textMutedForeground,
+    });
+    page.add(footerText);
+
     page.add(group);
     stage.add(page);
 
@@ -979,6 +991,16 @@ export async function renderCertificate({
       x: pageWidth - brandingRect.width - margin,
       y: pageTopMargin / 2, // Less padding since there's nothing else on this page.
     } satisfies Partial<Konva.GroupConfig>);
+
+    const overflowFooterText = new Konva.Text({
+      x: margin,
+      y: pageHeight - textXs - 10,
+      text: `${i18n._(msg`Envelope ID`)}: ${envelopeId}`,
+      fontFamily: 'Inter',
+      fontSize: textXs,
+      fill: textMutedForeground,
+    });
+    page.add(overflowFooterText);
 
     page.add(brandingGroup);
     stage.add(page);

@@ -33,6 +33,7 @@ import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { BrandingLogo } from '~/components/general/branding-logo';
 import PDFViewerLazy from '~/components/general/pdf-viewer/pdf-viewer-lazy';
+import { SourceCodeFooter } from '~/components/general/source-code-footer';
 import { injectCss } from '~/utils/css-vars';
 
 import { DocumentSigningAttachmentsPopover } from '../general/document-signing/document-signing-attachments-popover';
@@ -316,6 +317,8 @@ export const EmbedSignDocumentV1ClientPage = ({
               scrollParentRef="window"
               onDocumentLoad={() => setHasDocumentLoaded(true)}
             />
+
+            <SourceCodeFooter />
           </div>
 
           {/* Widget */}

@@ -115,7 +115,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       const storageType = isS3Path ? 'S3_PATH' : 'BYTES_64';
 
       const file = await getFileServerSide({
-        type: (storageType as 'S3_PATH' | 'BYTES_64'),
+        type: storageType as 'S3_PATH' | 'BYTES_64',
         data: attachment.data,
       });
 
@@ -192,7 +192,7 @@ export const sendCompletedEmail = async ({ id, requestMetadata }: SendDocumentOp
       ],
       from: senderEmail,
       replyTo: replyToEmail,
-      subject: i18n._(msg`Signing Complete!`),
+      subject: i18n._(msg`Signed: ${envelope.title}`),
       html,
       text,
       attachments: allEmailAttachments,

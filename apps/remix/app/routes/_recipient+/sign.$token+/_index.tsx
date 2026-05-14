@@ -518,8 +518,6 @@ const SigningPageV2 = ({ data }: { data: Awaited<ReturnType<typeof handleV2Loade
         >
           <DocumentSigningPageViewV2 />
         </EnvelopeRenderProvider>
-
-        <SourceCodeFooter />
       </DocumentSigningAuthProvider>
     </EnvelopeSigningProvider>
   );
