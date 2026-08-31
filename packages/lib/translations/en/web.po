@@ -4917,6 +4917,10 @@ msgstr "Envelope distributed"
 
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
 #: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-audit-logs.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
+#: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Envelope ID"
 msgstr "Envelope ID"
 
